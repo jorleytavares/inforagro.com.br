@@ -24,6 +24,10 @@ $router->get('/admin', 'Admin\DashboardController', 'index');
 $router->get('/admin/search-terms', 'Admin\SearchTermsController', 'index');
 $router->post('/admin/search-terms/clear', 'Admin\SearchTermsController', 'clear');
 
+// Admin - Newsletter
+$router->get('/admin/newsletter', 'Admin\NewsletterAdminController', 'index');
+$router->get('/admin/newsletter/export', 'Admin\NewsletterAdminController', 'export');
+
 // Admin - Posts
 $router->get('/admin/posts', 'Admin\PostController', 'index');
 $router->get('/admin/posts/create', 'Admin\PostController', 'create');

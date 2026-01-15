@@ -372,6 +372,10 @@
                     <span class="nav-link-icon">🔍</span>
                     Monitor de Buscas
                 </a>
+                <a href="/admin/newsletter" class="nav-link <?= strpos($_SERVER['REQUEST_URI'], '/admin/newsletter') !== false ? 'active' : '' ?>">
+                    <span class="nav-link-icon">📧</span>
+                    Newsletter
+                </a>
                 
                 <div class="nav-section">
                     <div class="nav-section-title">Sistema</div>

@@ -22,4 +22,12 @@ class NewsletterSubscriber
         $stmt = $conn->prepare("INSERT INTO newsletter_subscribers (email, ip_address) VALUES (?, ?)");
         return $stmt->execute([$email, $ip]);
     }
+    /**
+     * Obter todos os inscritos
+     */
+    public static function getAll(): array
+    {
+        $conn = Database::getInstance();
+        return $conn->query("SELECT * FROM newsletter_subscribers ORDER BY created_at DESC")->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
