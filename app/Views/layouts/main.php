@@ -7,10 +7,19 @@
     <title><?= htmlspecialchars($pageTitle ?? 'InforAgro - Portal do Agronegócio Brasileiro') ?></title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="<?= htmlspecialchars($pageDescription ?? 'Portal de notícias, análises e referências sobre o agronegócio brasileiro. Agricultura, pecuária, mercado agro e sustentabilidade.') ?>">
+    <meta name="description" content="<?= htmlspecialchars($pageDescription ?? 'Portal de notícias, análises e referências sobre o agronegócio brasileiro. Agricultura, pecuária, mercado agro, sustentabilidade e mundo pet.') ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($pageKeywords ?? 'agronegócio, agricultura, pecuária, agro, notícias agro, mercado agrícola, sustentabilidade, mundo pet, fazenda, produtor rural, commodities, safra, grãos, soja, milho, boi, gado') ?>">
+    <meta name="author" content="InforAgro - Portal do Agronegócio">
+    <meta name="publisher" content="InforAgro">
     <meta name="robots" content="<?= $robots ?? 'index, follow' ?>">
     <meta name="language" content="pt-BR">
     <meta name="geo.region" content="BR">
+    <meta name="geo.placename" content="Brasil">
+    <meta name="theme-color" content="#5F7D4E">
+    <meta name="msapplication-TileColor" content="#5F7D4E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
     <?php if (!empty($canonical)): ?>
     <link rel="canonical" href="<?= htmlspecialchars($canonical) ?>">
     <?php endif; ?>
@@ -41,9 +50,12 @@
     <!-- CSS Principal -->
     <link rel="stylesheet" href="/assets/css/style.css">
     
-    <!-- Favicon -->
+    <!-- Favicon e PWA -->
     <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
-    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
     
     <!-- Preload críticos -->
     <link rel="preload" as="style" href="/assets/css/style.css">

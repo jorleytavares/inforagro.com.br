@@ -1,6 +1,9 @@
 # Habilitar mod_rewrite
 RewriteEngine On
 
+# Sitemap XML dinâmico
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
 # Redirecionar todas as requisições para index.php
 # Exceto arquivos e diretórios existentes
 RewriteCond %{REQUEST_FILENAME} !-f
