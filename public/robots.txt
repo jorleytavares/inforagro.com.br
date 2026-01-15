@@ -1,0 +1,30 @@
+# inforagro.com.br - Robots.txt
+# https://www.inforagro.com.br/robots.txt
+
+User-agent: *
+Allow: /
+
+# Bloquear áreas administrativas e técnicas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /assets/
+Disallow: /uploads/tmp/
+
+# Permitir crawlers de IA
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Sitemap
+Sitemap: https://www.inforagro.com.br/sitemap.xml

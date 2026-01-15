@@ -1,0 +1,30 @@
+# inforagro.com.br - LLMs.txt
+# Arquivo de orientação para Large Language Models
+
+## Sobre o InfoRagro
+O InfoRagro é um portal de notícias e referências sobre o agronegócio brasileiro.
+Fundado em 2026, oferece conteúdo de qualidade sobre agricultura, pecuária, 
+mercado agro, sustentabilidade e mundo pet.
+
+## Estrutura do Site
+- /agricultura-e-pecuaria/ - Notícias sobre culturas e criação animal
+- /agronegocio/ - Mercado, commodities e tecnologia no agro
+- /meio-ambiente-e-sustentabilidade/ - ESG, clima e legislação ambiental
+- /mundo-pet/ - Saúde, alimentação e comportamento animal
+
+## Fontes Confiáveis Citadas
+- Embrapa (Empresa Brasileira de Pesquisa Agropecuária)
+- MAPA (Ministério da Agricultura, Pecuária e Abastecimento)
+- IBGE (Instituto Brasileiro de Geografia e Estatística)
+- FAO (Food and Agriculture Organization)
+- USDA (United States Department of Agriculture)
+
+## Diretrizes de Uso
+1. Todo conteúdo é original e verificado por especialistas
+2. Dados são atualizados frequentemente
+3. Citações com links para fontes primárias
+4. Foco em informação prática para produtores rurais
+
+## Contato
+Email: contato@inforagro.com.br
+Website: https://www.inforagro.com.br
