@@ -22,6 +22,7 @@ $router->post('/admin/reset-password', 'Admin\PasswordResetController', 'doReset
 
 $router->get('/admin', 'Admin\DashboardController', 'index');
 $router->get('/admin/search-terms', 'Admin\SearchTermsController', 'index');
+$router->post('/admin/search-terms/clear', 'Admin\SearchTermsController', 'clear');
 
 // Admin - Posts
 $router->get('/admin/posts', 'Admin\PostController', 'index');

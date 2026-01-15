@@ -1,6 +1,11 @@
 <div class="header-actions">
     <h1 class="page-title">Monitor de Buscas</h1>
-    <a href="/admin/search-terms" class="btn btn-secondary btn-sm">Atualizar</a>
+    <div class="actions-group">
+        <a href="/admin/search-terms" class="btn btn-secondary btn-sm">Atualizar</a>
+        <form action="/admin/search-terms/clear" method="POST" style="display:inline-block; margin-left: 8px;" onsubmit="return confirm('Tem certeza que deseja limpar todo o histórico de buscas? Isso não pode ser desfeito.');">
+            <button type="submit" class="btn btn-danger btn-sm">Limpar Histórico</button>
+        </form>
+    </div>
 </div>
 
 <div class="stats-grid">

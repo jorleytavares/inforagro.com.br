@@ -26,4 +26,14 @@ class SearchTermsController extends DashboardController
             'stats' => $stats
         ]);
     }
+    public function clear(): void
+    {
+        try {
+            SearchLog::clearLogs();
+            header('Location: /admin/search-terms?success=cleared');
+        } catch (\Exception $e) {
+            header('Location: /admin/search-terms?error=failed');
+        }
+        exit;
+    }
 }

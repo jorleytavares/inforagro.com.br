@@ -89,4 +89,14 @@ class SearchLog
             'today_searches' => $conn->query("SELECT count(*) FROM search_logs WHERE DATE(created_at) = CURDATE()")->fetchColumn()
         ];
     }
+    /**
+     * Limpa o histórico de buscas
+     * @return bool
+     */
+    public static function clearLogs(): bool
+    {
+        self::ensureTableExists();
+        $conn = Database::getInstance();
+        return (bool) $conn->exec("TRUNCATE TABLE search_logs");
+    }
 }
