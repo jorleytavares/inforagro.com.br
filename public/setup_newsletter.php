@@ -1,14 +1,17 @@
 <?php
 /**
- * Script para criar tabela de newsletter
+ * Script para criar tabela de newsletter (Versão Autônoma)
+ * ATENÇÃO: Delete este arquivo após usar!
  */
 
-require_once __DIR__ . '/../app/Core/Config.php';
-require_once __DIR__ . '/../app/Core/Database.php';
+// Exibir erros para debug
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-use App\Core\Database;
+echo "<h2>Criando Tabela Newsletter</h2>";
 
-// Carregar config manualmente se necessário
+// Carregar .env manualmente
 $envFile = __DIR__ . '/../.env';
 if (file_exists($envFile)) {
     $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -18,14 +21,14 @@ if (file_exists($envFile)) {
             $_ENV[trim($key)] = trim($value);
         }
     }
+} else {
+    die("ERRO: Arquivo .env não encontrado.");
 }
 
 $host = $_ENV['DB_HOST'] ?? 'localhost';
 $dbname = $_ENV['DB_NAME'] ?? '';
 $user = $_ENV['DB_USER'] ?? '';
 $pass = $_ENV['DB_PASS'] ?? '';
-
-echo "<h2>Criando Tabela Newsletter</h2>";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
@@ -42,10 +45,14 @@ try {
     
     $pdo->exec($sql);
     
-    echo "<p style='color:green;'>Tabela <strong>newsletter_subscribers</strong> criada com sucesso!</p>";
-    echo "<p style='color:red;'>Delete este arquivo após o uso!</p>";
+    echo "<p style='color:green;'><strong>SUCESSO!</strong></p>";
+    echo "<p>Tabela <strong>newsletter_subscribers</strong> criada/verificada com sucesso.</p>";
+    echo "<hr>";
+    echo "<p style='color:red;'><strong>IMPORTANTE: Delete este arquivo agora!</strong></p>";
+    echo "<p>Caminho: /home/curr6441/inforagro.com.br/public/setup_newsletter.php</p>";
     
 } catch (PDOException $e) {
-    echo "<p style='color:red;'>Erro: " . $e->getMessage() . "</p>";
+    echo "<h3 style='color:red;'>ERRO:</h3>";
+    echo "<pre>" . $e->getMessage() . "</pre>";
 }
 ?>
