@@ -90,8 +90,8 @@
     <!-- Google Analytics 4 -->
     <?php $gaId = \App\Helpers\Settings::get('analytics_id'); ?>
     <?php if ($gaId): ?>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars($gaId) ?>"></script>
-    <script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars($gaId) ?>" data-cfasync="false"></script>
+    <script data-cfasync="false">
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
