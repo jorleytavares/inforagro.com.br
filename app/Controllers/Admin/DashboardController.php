@@ -164,13 +164,22 @@ class DashboardController extends Controller
             );
         } catch (\Exception $e) {}
         
+        // Newsletter Stats
+        $stats['newsletter_total'] = 0;
+        $recentSubscribers = [];
+        try {
+            $stats['newsletter_total'] = count(\App\Models\NewsletterSubscriber::getAll());
+            $recentSubscribers = \App\Models\NewsletterSubscriber::getRecent(5);
+        } catch (\Exception $e) {}
+        
         $this->adminView('dashboard.index', [
             'pageTitle' => 'Dashboard | Admin InforAgro',
             'stats' => $stats,
             'recentPosts' => $recentPosts,
             'topTerms' => $topTerms,
             'missingTerms' => $missingTerms,
-            'chartData' => $chartData
+            'chartData' => $chartData,
+            'recentSubscribers' => $recentSubscribers
         ]);
     }
     

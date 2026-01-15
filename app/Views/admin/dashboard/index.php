@@ -31,7 +31,7 @@
 </style>
 
 <!-- KPI Cards -->
-<div class="stats-grid">
+<div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
     <div class="stat-card glass-panel">
         <div class="stat-value"><?= $stats['total_posts'] ?></div>
         <div class="stat-label">Total de Posts</div>
@@ -41,8 +41,12 @@
         <div class="stat-label">Publicados</div>
     </div>
     <div class="stat-card glass-panel">
-        <div class="stat-value text-warning"><?= $stats['draft_posts'] ?></div>
-        <div class="stat-label">Rascunhos</div>
+        <div class="stat-value text-primary"><?= $stats['total_categories'] ?></div>
+        <div class="stat-label">Categorias Ativas</div>
+    </div>
+    <div class="stat-card glass-panel">
+        <div class="stat-value" style="color: #6366f1;"><?= $stats['newsletter_total'] ?? 0 ?></div>
+        <div class="stat-label">Assinantes Newsletter</div>
     </div>
     <div class="stat-card glass-panel">
         <div class="stat-value"><?= number_format($stats['total_views']) ?></div>
@@ -161,6 +165,26 @@
                     </div>
                 <?php else: ?>
                     <p class="text-muted text-center py-3">Nenhum termo perdido.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+        
+        <!-- Newsletter (Novos Inscritos) -->
+        <div class="card glass-panel mt-4">
+            <div class="card-header border-0">
+                <h2 class="card-title" style="color: #6366f1;">Novos Assinantes</h2>
+                <a href="/admin/newsletter" class="btn btn-link btn-sm text-muted" style="text-decoration: none; font-size: 0.8rem;">Ver todos</a>
+            </div>
+            <div class="card-body" style="padding: 0 1.5rem 1.5rem;">
+                <?php if (!empty($recentSubscribers)): ?>
+                    <?php foreach ($recentSubscribers as $sub): ?>
+                    <div class="quick-list-item">
+                        <span style="font-weight: 500; overflow: hidden; text-overflow: ellipsis; max-width: 180px;white-space: nowrap;"><?= htmlspecialchars($sub['email']) ?></span>
+                        <span style="font-size: 0.75rem; color: #94a3b8;"><?= date('d/m', strtotime($sub['created_at'])) ?></span>
+                    </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-muted text-center py-3">Nenhum assinante recente.</p>
                 <?php endif; ?>
             </div>
         </div>

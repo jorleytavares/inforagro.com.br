@@ -30,4 +30,12 @@ class NewsletterSubscriber
         $conn = Database::getInstance();
         return $conn->query("SELECT * FROM newsletter_subscribers ORDER BY created_at DESC")->fetchAll(\PDO::FETCH_ASSOC);
     }
+    /**
+     * Obter inscritos recentes
+     */
+    public static function getRecent(int $limit = 5): array
+    {
+        $conn = Database::getInstance();
+        return $conn->query("SELECT * FROM newsletter_subscribers ORDER BY created_at DESC LIMIT $limit")->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
