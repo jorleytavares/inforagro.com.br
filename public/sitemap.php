@@ -4,103 +4,93 @@
  * InforAgro - Portal do Agronegócio
  */
 
-header('Content-Type: application/xml; charset=utf-8');
-header('X-Robots-Tag: noindex');
-
 // Configuração
 $baseUrl = 'https://inforagro.com.br';
 $today = date('Y-m-d');
 
-// Carregar autoload e configuração
-require_once __DIR__ . '/../app/Core/Config.php';
-require_once __DIR__ . '/../app/Core/Database.php';
-
-use App\Core\Database;
+header('Content-Type: application/xml; charset=utf-8');
 
 echo '<?xml version="1.0" encoding="UTF-8"?>';
-?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+// Página Principal
+echo '<url>';
+echo '<loc>' . $baseUrl . '/</loc>';
+echo '<lastmod>' . $today . '</lastmod>';
+echo '<changefreq>daily</changefreq>';
+echo '<priority>1.0</priority>';
+echo '</url>';
+
+// Páginas Institucionais
+echo '<url><loc>' . $baseUrl . '/sobre</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>';
+echo '<url><loc>' . $baseUrl . '/contato</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>';
+
+// Tentar carregar categorias e posts do banco
+try {
+    // Carregar configuração
+    $envFile = __DIR__ . '/../.env';
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+                list($key, $value) = explode('=', $line, 2);
+                $_ENV[trim($key)] = trim($value);
+            }
+        }
+    }
     
-    <!-- Página Principal -->
-    <url>
-        <loc><?= $baseUrl ?>/</loc>
-        <lastmod><?= $today ?></lastmod>
-        <changefreq>daily</changefreq>
-        <priority>1.0</priority>
-    </url>
+    $host = $_ENV['DB_HOST'] ?? 'localhost';
+    $dbname = $_ENV['DB_NAME'] ?? '';
+    $user = $_ENV['DB_USER'] ?? '';
+    $pass = $_ENV['DB_PASS'] ?? '';
     
-    <!-- Páginas Institucionais -->
-    <url>
-        <loc><?= $baseUrl ?>/sobre</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc><?= $baseUrl ?>/contato</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    
-    <!-- Categorias -->
-    <?php
-    try {
-        $db = Database::getInstance();
-        $categories = $db->fetchAll("SELECT slug, name FROM categories ORDER BY name");
+    if ($dbname && $user) {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        foreach ($categories as $category):
-    ?>
-    <url>
-        <loc><?= $baseUrl ?>/<?= htmlspecialchars($category['slug']) ?></loc>
-        <lastmod><?= $today ?></lastmod>
-        <changefreq>daily</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <?php endforeach; ?>
-    
-    <!-- Posts Publicados -->
-    <?php
-        $posts = $db->fetchAll("
-            SELECT p.slug, p.title, p.featured_image, p.updated_at, c.slug as category_slug 
+        // Categorias
+        $stmt = $pdo->query("SELECT slug FROM categories ORDER BY name");
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo '<url>';
+            echo '<loc>' . $baseUrl . '/' . htmlspecialchars($row['slug']) . '</loc>';
+            echo '<lastmod>' . $today . '</lastmod>';
+            echo '<changefreq>daily</changefreq>';
+            echo '<priority>0.8</priority>';
+            echo '</url>';
+        }
+        
+        // Posts
+        $stmt = $pdo->query("
+            SELECT p.slug, p.updated_at, c.slug as cat_slug 
             FROM posts p 
             LEFT JOIN categories c ON p.category_id = c.id 
             WHERE p.status = 'published' 
             ORDER BY p.published_at DESC 
-            LIMIT 1000
+            LIMIT 500
         ");
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $postUrl = $baseUrl . '/' . $row['cat_slug'] . '/' . $row['slug'];
+            $lastmod = date('Y-m-d', strtotime($row['updated_at']));
+            echo '<url>';
+            echo '<loc>' . htmlspecialchars($postUrl) . '</loc>';
+            echo '<lastmod>' . $lastmod . '</lastmod>';
+            echo '<changefreq>weekly</changefreq>';
+            echo '<priority>0.6</priority>';
+            echo '</url>';
+        }
         
-        foreach ($posts as $post):
-            $postUrl = $baseUrl . '/' . $post['category_slug'] . '/' . $post['slug'];
-            $lastmod = date('Y-m-d', strtotime($post['updated_at']));
-    ?>
-    <url>
-        <loc><?= htmlspecialchars($postUrl) ?></loc>
-        <lastmod><?= $lastmod ?></lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-        <?php if (!empty($post['featured_image'])): ?>
-        <image:image>
-            <image:loc><?= $baseUrl ?><?= htmlspecialchars($post['featured_image']) ?></image:loc>
-            <image:title><?= htmlspecialchars($post['title']) ?></image:title>
-        </image:image>
-        <?php endif; ?>
-    </url>
-    <?php endforeach; ?>
-    
-    <!-- Tags -->
-    <?php
-        $tags = $db->fetchAll("SELECT DISTINCT slug FROM tags ORDER BY slug LIMIT 100");
-        foreach ($tags as $tag):
-    ?>
-    <url>
-        <loc><?= $baseUrl ?>/tag/<?= htmlspecialchars($tag['slug']) ?></loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.4</priority>
-    </url>
-    <?php endforeach;
-    } catch (Exception $e) {
-        // Silenciosamente ignorar erros de banco
+        // Tags
+        $stmt = $pdo->query("SELECT slug FROM tags ORDER BY slug LIMIT 50");
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo '<url>';
+            echo '<loc>' . $baseUrl . '/tag/' . htmlspecialchars($row['slug']) . '</loc>';
+            echo '<changefreq>weekly</changefreq>';
+            echo '<priority>0.4</priority>';
+            echo '</url>';
+        }
     }
-    ?>
-</urlset>
+} catch (Exception $e) {
+    // Silenciosamente ignorar erros
+}
+
+echo '</urlset>';
