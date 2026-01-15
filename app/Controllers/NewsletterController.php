@@ -25,35 +25,19 @@ class NewsletterController extends Controller
             return;
         }
         
-        // Salvar email (arquivo simples por enquanto)
-        $newsletterFile = ROOT_PATH . '/storage/newsletter.txt';
-        $storageDir = ROOT_PATH . '/storage';
-        
-        if (!is_dir($storageDir)) {
-            mkdir($storageDir, 0755, true);
+        try {
+            // Tentar salvar no banco
+            \App\Models\NewsletterSubscriber::add($email, $_SERVER['REMOTE_ADDR'] ?? null);
+            $message = 'Inscrição realizada com sucesso!';
+        } catch (\Exception $e) {
+            // Fallback para arquivo se banco falhar
+            $logEntry = date('Y-m-d H:i:s') . " - " . $email . " - " . ($_SERVER['REMOTE_ADDR']??'') . "\n";
+            file_put_contents(ROOT_PATH . '/storage/newsletter.txt', $logEntry, FILE_APPEND);
+            $message = 'Inscrição realizada!';
         }
-        
-        // Verificar se já existe
-        $existingEmails = file_exists($newsletterFile) ? file($newsletterFile, FILE_IGNORE_NEW_LINES) : [];
-        
-        if (in_array($email, $existingEmails)) {
-            if ($this->isAjax()) {
-                $this->json(['success' => true, 'message' => 'Você já está inscrito!']);
-                return;
-            }
-            $this->redirect('/?newsletter=exists');
-            return;
-        }
-        
-        // Adicionar email
-        file_put_contents($newsletterFile, $email . "\n", FILE_APPEND);
-        
-        // Log
-        $logEntry = date('Y-m-d H:i:s') . " - " . $email . " - " . $_SERVER['REMOTE_ADDR'] . "\n";
-        file_put_contents(ROOT_PATH . '/storage/newsletter-log.txt', $logEntry, FILE_APPEND);
         
         if ($this->isAjax()) {
-            $this->json(['success' => true, 'message' => 'Inscrição realizada com sucesso!']);
+            $this->json(['success' => true, 'message' => $message]);
             return;
         }
         
