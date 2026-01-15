@@ -1,9 +1,13 @@
-<div class="header-actions">
-    <h1 class="page-title">Monitor de Buscas</h1>
-    <div class="actions-group">
-        <a href="/admin/search-terms" class="btn btn-secondary btn-sm">Atualizar</a>
-        <form action="/admin/search-terms/clear" method="POST" style="display:inline-block; margin-left: 8px;" onsubmit="return confirm('Tem certeza que deseja limpar todo o histórico de buscas? Isso não pode ser desfeito.');">
-            <button type="submit" class="btn btn-danger btn-sm">Limpar Histórico</button>
+<div class="header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <h1 class="page-title" style="margin: 0;">Monitor de Buscas</h1>
+    <div class="actions-group" style="display: flex; gap: 10px; align-items: center;">
+        <a href="/admin/search-terms" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; height: 32px;">
+            Atualizar
+        </a>
+        <form action="/admin/search-terms/clear" method="POST" onsubmit="return confirm('Tem certeza que deseja limpar todo o histórico de buscas? Isso não pode ser desfeito.');" style="margin: 0;">
+            <button type="submit" class="btn btn-danger btn-sm" style="display: inline-flex; align-items: center; height: 32px;">
+                Limpar Histórico
+            </button>
         </form>
     </div>
 </div>
