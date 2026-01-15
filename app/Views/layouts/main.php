@@ -88,7 +88,7 @@
     <?= $additionalSchemas ?? '' ?>
 
     <!-- Google Analytics 4 -->
-    <?php $gaId = \App\Helpers\Settings::get('google_analytics_id'); ?>
+    <?php $gaId = \App\Helpers\Settings::get('analytics_id'); ?>
     <?php if ($gaId): ?>
     <script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars($gaId) ?>"></script>
     <script>
@@ -98,6 +98,13 @@
 
       gtag('config', '<?= htmlspecialchars($gaId) ?>');
     </script>
+    <?php endif; ?>
+
+    <!-- Google AdSense -->
+    <?php $adsenseId = \App\Helpers\Settings::get('adsense_client_id'); ?>
+    <?php if ($adsenseId): ?>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<?= htmlspecialchars($adsenseId) ?>"
+     crossorigin="anonymous"></script>
     <?php endif; ?>
 
     <!-- Custom Head Code -->
@@ -203,6 +210,22 @@
                     </a>
                     <p class="footer-tagline">Portal de notícias e referências sobre o agronegócio brasileiro.</p>
                     <p class="footer-desc">Agricultura, pecuária, mercado agro, sustentabilidade e mundo pet.</p>
+                    
+                    <!-- Redes Sociais -->
+                    <div class="social-links" style="margin-top: 1rem; display: flex; gap: 10px;">
+                        <?php if ($fb = \App\Helpers\Settings::get('facebook_url')): ?>
+                        <a href="<?= htmlspecialchars($fb) ?>" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+                        <?php endif; ?>
+                        <?php if ($tw = \App\Helpers\Settings::get('twitter_url')): ?>
+                        <a href="<?= htmlspecialchars($tw) ?>" target="_blank" rel="noopener" aria-label="Twitter">TW</a>
+                        <?php endif; ?>
+                        <?php if ($ig = \App\Helpers\Settings::get('instagram_url')): ?>
+                        <a href="<?= htmlspecialchars($ig) ?>" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+                        <?php endif; ?>
+                        <?php if ($yt = \App\Helpers\Settings::get('youtube_url')): ?>
+                        <a href="<?= htmlspecialchars($yt) ?>" target="_blank" rel="noopener" aria-label="YouTube">YT</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 
                 <div class="footer-links">
