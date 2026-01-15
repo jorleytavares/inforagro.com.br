@@ -1,16 +1,17 @@
 <?php
 /**
- * Script para limpar dados de exemplo e resetar categorias
+ * Script para limpar dados de exemplo e resetar categorias (Versão Autônoma)
  * ATENÇÃO: Delete este arquivo após usar!
  */
 
-// Carregar autoload e configuração
-require_once __DIR__ . '/../app/Core/Config.php';
-require_once __DIR__ . '/../app/Core/Database.php';
+// Exibir erros para debug
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-use App\Core\Database;
+echo "<h2>Limpando e Resetando Categorias</h2>";
 
-// Configuração manual do DB se autoload falhar (segurança)
+// Carregar .env manualmente
 $envFile = __DIR__ . '/../.env';
 if (file_exists($envFile)) {
     $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -20,6 +21,8 @@ if (file_exists($envFile)) {
             $_ENV[trim($key)] = trim($value);
         }
     }
+} else {
+    die("ERRO: Arquivo .env não encontrado em $envFile");
 }
 
 $host = $_ENV['DB_HOST'] ?? 'localhost';
@@ -27,23 +30,29 @@ $dbname = $_ENV['DB_NAME'] ?? '';
 $user = $_ENV['DB_USER'] ?? '';
 $pass = $_ENV['DB_PASS'] ?? '';
 
-echo "<h2>Limpando e Resetando Categorias</h2>";
-
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // 1. Limpar tabelas de conteúdo (mantendo usuários)
-    echo "<p>Limpando posts e tags...</p>";
-    $pdo->exec("DELETE FROM post_tags");
-    $pdo->exec("DELETE FROM tags");
-    $pdo->exec("DELETE FROM posts");
-    $pdo->exec("DELETE FROM categories");
+    echo "<p>Limpando posts, tags e logs...</p>";
     
-    // Resetar AUTO_INCREMENT
-    $pdo->exec("ALTER TABLE categories AUTO_INCREMENT = 1");
-    $pdo->exec("ALTER TABLE posts AUTO_INCREMENT = 1");
-    $pdo->exec("ALTER TABLE tags AUTO_INCREMENT = 1");
+    // Desabilitar checagem de chave estrangeira temporariamente
+    $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
+    
+    $tablesToTruncate = ['post_tags', 'tags', 'posts', 'categories', 'audit_logs', 'login_attempts'];
+    
+    foreach ($tablesToTruncate as $table) {
+        // Verificar se tabela existe antes de limpar
+        try {
+            $pdo->exec("TRUNCATE TABLE $table");
+            echo "Ok: Tabela <strong>$table</strong> limpa.<br>";
+        } catch (Exception $e) {
+            echo "Aviso: Tabela <strong>$table</strong> não encontrada ou erro ao limpar (pode ser normal).<br>";
+        }
+    }
+    
+    $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
     
     // 2. Inserir Categorias Oficiais
     echo "<p>Inserindo categorias oficiais...</p>";
@@ -76,12 +85,12 @@ try {
     echo "<ul>";
     foreach ($categories as $cat) {
         $stmt->execute([$cat['name'], $cat['slug'], $cat['description']]);
-        echo "li>Criada: <strong>{$cat['name']}</strong></li>";
+        echo "<li>Criada: <strong>{$cat['name']}</strong></li>";
     }
     echo "</ul>";
     
     echo "<hr>";
-    echo "<p style='color:green;'><strong>LIMPEZA CONCLUÍDA COM SUCESSO!</strong></p>";
+    echo "<h3 style='color:green;'>LIMPEZA CONCLUÍDA COM SUCESSO!</h3>";
     echo "<p>Todos os posts de exemplo foram apagados.</p>";
     echo "<p>Apenas as 4 categorias oficiais estão ativas.</p>";
     
@@ -90,6 +99,7 @@ try {
     echo "<p>Caminho: /home/curr6441/inforagro.com.br/public/reset_content.php</p>";
     
 } catch (PDOException $e) {
-    echo "<p style='color:red;'>ERRO: " . $e->getMessage() . "</p>";
+    echo "<h3 style='color:red;'>ERRO:</h3>";
+    echo "<pre>" . $e->getMessage() . "</pre>";
 }
 ?>
