@@ -31,7 +31,7 @@
                         <div>
                             <span class="author-name" itemprop="author">{{ $post->author->name ?? 'Equipe InfoRagro' }}</span>
                             <time class="article-date" datetime="{{ $post->published_at }}" itemprop="datePublished">
-                                {{ $post->published_at->format('d \d\e F \d\e Y') }}
+                                {{ $post->published_at->locale('pt_BR')->translatedFormat('d \d\e F \d\e Y') }}
                             </time>
                         </div>
                     </div>

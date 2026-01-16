@@ -1646,3 +1646,12 @@ a:hover {
     box-shadow: var(--shadow-lg);
 }
 
+
+/* Caption Style Fix */
+.article-featured-image figcaption {
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+    text-align: center;
+    margin-top: var(--space-sm);
+    font-style: italic;
+}
