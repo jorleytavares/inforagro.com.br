@@ -6,7 +6,7 @@
         <span class="post-category">{{ $post->category->name }}</span>
         @endif
         
-        @if($post->featured_image)
+        @if($post->featured_image && \Illuminate\Support\Facades\Storage::disk('public')->exists($post->featured_image))
         <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" loading="lazy">
         @else
         <div class="post-image-placeholder">
