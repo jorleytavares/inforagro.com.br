@@ -166,9 +166,9 @@ $id = $post['id'] ?? null;
     </div>
 </div>
 
-<!-- Scripts Essenciais (JSDelivr) -->
-<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+<!-- Scripts Essenciais (Local Assets to bypass CSP) -->
+<link href="/assets/css/quill.snow.css" rel="stylesheet">
+<script src="/assets/js/quill.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
