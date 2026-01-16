@@ -1,0 +1,197 @@
+/* Modern & Intuitive Theme for Filament Admin */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --font-family-base: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --primary-rgb: 99, 102, 241;
+    /* Indigo */
+    --surface-color: #ffffff;
+    --background-color: #f3f4f6;
+    --sidebar-bg: #ffffff;
+}
+
+body,
+.fi-body {
+    background-color: var(--background-color) !important;
+    font-family: var(--font-family-base) !important;
+    color: #1f2937;
+}
+
+/* --- Layout & Sidebar --- */
+
+/* Sidebar */
+.fi-sidebar {
+    background-color: var(--sidebar-bg) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.02);
+}
+
+.fi-sidebar-item {
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 4px;
+    transition: all 0.2s ease;
+}
+
+.fi-sidebar-item:hover {
+    background-color: rgba(var(--primary-rgb), 0.05) !important;
+}
+
+.fi-sidebar-item-active {
+    background-color: rgba(var(--primary-rgb), 0.1) !important;
+    color: rgb(var(--primary-rgb)) !important;
+    font-weight: 600;
+}
+
+.fi-sidebar-item-active svg {
+    color: rgb(var(--primary-rgb)) !important;
+}
+
+/* Topbar */
+.fi-topbar {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+/* --- Components --- */
+
+/* Cards & Sections */
+.fi-card,
+.fi-section,
+.fi-fo-section,
+.bg-white {
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid rgba(0, 0, 0, 0.03) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    background-color: var(--surface-color) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fi-card:hover {
+    /* Subtle lift effect on hover for overview cards */
+    /* transform: translateY(-2px); */
+    /* box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025) !important; */
+}
+
+/* Inputs */
+.fi-input,
+.fi-select-input,
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #f9fafb !important;
+    transition: all 0.2s ease;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+
+.fi-input:focus,
+.fi-select-input:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: rgb(var(--primary-rgb)) !important;
+    background-color: #fff !important;
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1) !important;
+}
+
+/* Buttons */
+.fi-btn {
+    border-radius: var(--radius-md) !important;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none !important;
+    /* Remove harsh shadows */
+}
+
+.fi-btn-primary {
+    background-color: rgb(var(--primary-rgb)) !important;
+    color: white !important;
+}
+
+.fi-btn-primary:hover {
+    background-color: rgba(var(--primary-rgb), 0.9) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3) !important;
+}
+
+.fi-btn-secondary,
+.fi-btn-gray {
+    background-color: white !important;
+    border: 1px solid #e5e7eb !important;
+    color: #374151 !important;
+}
+
+.fi-btn-secondary:hover,
+.fi-btn-gray:hover {
+    background-color: #f3f4f6 !important;
+    border-color: #d1d5db !important;
+}
+
+/* Tables */
+.fi-ta-header-cell {
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+}
+
+.fi-ta-row:hover {
+    background-color: #f9fafb !important;
+}
+
+/* Badges */
+.fi-badge {
+    border-radius: 9999px !important;
+    /* Pill shape */
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.fi-header-heading {
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+    color: #111827;
+}
+
+/* Scrollbar beautification */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Fix for dark mode if enabled (optional overrides) */
+@media (prefers-color-scheme: dark) {
+    /* If you want to force light mode styles in dark mode, keep !important above. 
+       If you want real dark mode support, we'd add .dark classes. 
+       Assuming user wants a clean 'modern' look which is often light & airy. */
+}

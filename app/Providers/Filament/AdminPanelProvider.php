@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 'panels::head.end',
-                fn (): string => '<link rel="stylesheet" href="' . asset('css/admin-brutalist.css') . '" />',
+                fn (): string => '<link rel="stylesheet" href="' . asset('css/admin-modern.css') . '" />',
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
