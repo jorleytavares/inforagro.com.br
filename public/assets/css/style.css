@@ -1633,3 +1633,16 @@ a:hover {
         order: 3;
     }
 }
+/* Fix for Featured Image in Single Post */
+.article-featured-image {
+    padding-bottom: var(--space-xl);
+}
+
+.article-featured-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    display: block;
+    box-shadow: var(--shadow-lg);
+}
+
