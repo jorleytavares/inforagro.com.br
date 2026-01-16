@@ -217,9 +217,8 @@ class PostController extends DashboardController
             'meta_title' => $title, // Automatic: Same as Title
             'meta_description' => $this->generateExcerpt($_POST['content'] ?? '', 160), // Automatic: Same as Excerpt
             'focus_keyword' => $_POST['focus_keyword'] ?? '',
-            'focus_keyword' => $_POST['focus_keyword'] ?? '',
             'featured_image' => $_POST['featured_image'] ?? '',
-            'featured_image_caption' => $_POST['featured_image_caption'] ?? '',
+            'featured_image_caption' => !empty($_POST['featured_image_caption']) ? $_POST['featured_image_caption'] : $title, // Auto-fill with Title if empty
             'custom_schema' => $_POST['custom_schema'] ?? '',
             'read_time' => $this->calculateReadTime($_POST['content'] ?? ''),
             'word_count' => str_word_count(strip_tags($_POST['content'] ?? '')),
