@@ -329,13 +329,15 @@
             color: var(--admin-text-muted);
         }
 
-        @media (max-width: 768px) {
             .admin-sidebar { display: none; }
             .admin-main { margin-left: 0; }
         }
+        
+        /* Picker Mode */
+        .picker-mode .admin-main { margin-left: 0; }
     </style>
 </head>
-<body>
+<body class="<?= !empty($isPicker) ? 'picker-mode' : '' ?>">
     <div class="admin-layout">
         <!-- Sidebar -->
         <?php if(empty($isPicker)): ?>
@@ -412,7 +414,7 @@
         <?php endif; ?>
         
         <!-- Main Content -->
-        <main class="admin-main" style="<?= !empty($isPicker) ? 'margin-left:0' : '' ?>">
+        <main class="admin-main">
             <?php if(empty($isPicker)): ?>
             <header class="admin-header">
                 <h1 class="header-title"><?= $pageTitle ?? 'Dashboard' ?></h1>
