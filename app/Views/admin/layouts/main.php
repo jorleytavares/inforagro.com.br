@@ -338,6 +338,7 @@
 <body>
     <div class="admin-layout">
         <!-- Sidebar -->
+        <?php if(empty($isPicker)): ?>
         <aside class="admin-sidebar">
             <div class="sidebar-header">
                 <a href="/admin" class="sidebar-logo">
@@ -408,9 +409,11 @@
                 </a>
             </nav>
         </aside>
+        <?php endif; ?>
         
         <!-- Main Content -->
-        <main class="admin-main">
+        <main class="admin-main" style="<?= !empty($isPicker) ? 'margin-left:0' : '' ?>">
+            <?php if(empty($isPicker)): ?>
             <header class="admin-header">
                 <h1 class="header-title"><?= $pageTitle ?? 'Dashboard' ?></h1>
                 <div class="header-user">
@@ -418,6 +421,7 @@
                     <a href="/admin/logout" class="btn-logout">Sair</a>
                 </div>
             </header>
+            <?php endif; ?>
             
             <div class="admin-content">
                 <?= $content ?>
