@@ -107,6 +107,7 @@ class MediaController extends DashboardController
         
         $destination = ROOT_PATH . '/public/uploads/' . $filename;
         
+        if (move_uploaded_file($file['tmp_name'], $destination)) {
             // Processar Imagem (Resize + Conversão AVIF/WebP)
             $finalFilename = $this->processImage($destination, $filename);
             
