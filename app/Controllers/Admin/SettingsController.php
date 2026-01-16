@@ -144,4 +144,34 @@ class SettingsController extends DashboardController
         }
         exit;
     }
+    public function fixDb(): void
+    {
+        $this->requireRole('admin');
+        
+        $updates = [
+            "ALTER TABLE posts ADD COLUMN meta_title VARCHAR(255) NULL AFTER status",
+            "ALTER TABLE posts ADD COLUMN meta_description TEXT NULL AFTER meta_title",
+            "ALTER TABLE posts ADD COLUMN focus_keyword VARCHAR(255) NULL AFTER meta_description",
+            "ALTER TABLE posts ADD COLUMN featured_image_caption VARCHAR(255) NULL AFTER featured_image",
+            "ALTER TABLE posts ADD COLUMN read_time INT DEFAULT 0 AFTER content",
+            "ALTER TABLE posts ADD COLUMN word_count INT DEFAULT 0 AFTER read_time",
+            "ALTER TABLE posts ADD COLUMN custom_schema TEXT NULL AFTER content"
+        ];
+        
+        $log = [];
+        
+        foreach ($updates as $sql) {
+            try {
+                Database::query($sql);
+                $log[] = "Success: " . substr($sql, 0, 50) . "...";
+            } catch (\Exception $e) {
+                $log[] = "Error/Exists: " . $e->getMessage();
+            }
+        }
+        
+        echo "<pre><h3>Database Fix Report</h3>";
+        print_r($log);
+        echo "<br><a href='/admin/posts'>Voltar para Posts</a>";
+        exit;
+    }
 }
