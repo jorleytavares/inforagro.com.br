@@ -131,6 +131,7 @@ function uploadFile(input) {
     
     const formData = new FormData();
     formData.append('file', input.files[0]);
+    formData.append('_csrf', '<?= $csrfToken ?? '' ?>');
     
     document.getElementById('upload-progress').style.display = 'block';
     
