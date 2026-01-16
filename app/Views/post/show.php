@@ -134,3 +134,16 @@
     </div>
 </section>
 <?php endif; ?>
+
+<script>
+    // Incrementar visualizações via AJAX (mantém cache de página funcional)
+    (function() {
+        if (typeof fetch === 'function') {
+            fetch('/api/view', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ post_id: <?= (int)$post['id'] ?> })
+            }).catch(function(e) { console.error('Silent track error', e); });
+        }
+    })();
+</script>

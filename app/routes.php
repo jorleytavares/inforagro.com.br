@@ -123,6 +123,7 @@ $router->get('/sitemap-categories.xml', 'SitemapController', 'categories');
 $router->get('/api/posts', 'Api\PostController', 'index');
 $router->get('/api/posts/{id}', 'Api\PostController', 'show');
 $router->get('/api/categories', 'Api\CategoryController', 'index');
+$router->post('/api/view', 'PostController', 'registerView');
 
 // ==========================================
 // HEALTH CHECK E MÉTRICAS

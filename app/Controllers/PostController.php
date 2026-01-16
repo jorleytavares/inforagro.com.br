@@ -32,10 +32,15 @@ class PostController extends Controller
             return;
         }
         
-        // Incrementar visualizações
-        try {
-            Post::incrementViews($post['id']);
-        } catch (\Exception $e) {}
+        // Cache: 1h Browser, 7 dias CDN (Cloudflare)
+        // Isso reduz carga no servidor, mas requer contador de views via JS (AJAX)
+        if (getenv('APP_ENV') !== 'development') {
+            header('Cache-Control: public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400');
+            header('Vary: Accept-Encoding');
+        }
+
+        // Incremento Síncrono REMOVIDO em favor do AJAX para permitir cache de página HTML
+        // Veja método registerView() abaixo
         
         // Obter tags do post
         $tags = [];
@@ -73,6 +78,32 @@ class PostController extends Controller
             'breadcrumbs' => $breadcrumbs,
             'additionalSchemas' => $articleSchema,
         ]);
+    }
+
+    /**
+     * Registrar visualização via AJAX
+     * (Is para não quebrar o cache de página estática)
+     */
+    public function registerView(): void
+    {
+        // Headers para permitir AJAX de qualquer origem se necessário, ou restrito
+        header('Content-Type: application/json');
+        
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        if (!empty($data['post_id'])) {
+            try {
+                Post::incrementViews((int)$data['post_id']);
+                echo json_encode(['success' => true]);
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => 'Erro interno']);
+            }
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID ausente']);
+        }
+        exit;
     }
     
     /**
