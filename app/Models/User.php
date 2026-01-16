@@ -13,6 +13,11 @@ class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public $timestamps = false;
 
     public function canAccessPanel(Panel $panel): bool
@@ -45,9 +50,13 @@ class User extends Authenticatable implements FilamentUser
      */
     protected $fillable = [
         'name',
+        'slug',
         'email',
         'password',
         'role',
+        'bio',
+        'avatar',
+        'social_links',
     ];
 
     /**
@@ -70,6 +79,7 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'social_links' => 'array',
         ];
     }
 

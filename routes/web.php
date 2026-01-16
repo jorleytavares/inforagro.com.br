@@ -14,11 +14,27 @@ Route::post('/api/view', [PostController::class, 'incrementView'])->name('api.vi
 // Search
 Route::get('/buscar', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
 
+// Static Pages
+Route::controller(\App\Http\Controllers\PageController::class)->group(function () {
+    Route::get('/sobre', 'about')->name('page.about');
+    Route::get('/contato', 'contact')->name('page.contact');
+    Route::post('/contato', 'sendContact')->name('page.contact.send');
+    Route::get('/politica-de-privacidade', 'privacy')->name('page.privacy');
+    Route::get('/termos-de-uso', 'terms')->name('page.terms');
+});
+
 // Utility to fix storage link (Run once then remove)
 Route::get('/fix-storage', function () {
     \Illuminate\Support\Facades\Artisan::call('storage:link');
     return 'Storage Linked!';
 });
+
+// Newsletter
+Route::post('/newsletter', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+
+// Archives
+Route::get('/tag/{tag:slug}', [\App\Http\Controllers\TagController::class, 'show'])->name('tag.show');
+Route::get('/autor/{user:slug}', [\App\Http\Controllers\AuthorController::class, 'show'])->name('author.show');
 
 // Post Show (specific category/post)
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'show'])->name('post.show');

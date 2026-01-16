@@ -12,17 +12,22 @@ class SearchController extends Controller
     {
         $query = $request->input('q');
         
-        $posts = Post::with(['category', 'author'])
-            ->where('status', 'published')
-            ->where(function ($q) use ($query) {
-                $q->where('title', 'like', "%{$query}%")
-                  ->orWhere('content', 'like', "%{$query}%")
-                  ->orWhere('subtitle', 'like', "%{$query}%");
+        $posts = Post::query()
+            ->when($query, function ($builder) use ($query) {
+                $builder->where('title', 'like', "%{$query}%")
+                    ->orWhere('content', 'like', "%{$query}%");
             })
-            ->orderByDesc('published_at')
+            ->published() // Ensure scope exists or use where status/published_at
+            ->latest()
             ->paginate(12);
 
-        $posts->appends(['q' => $query]);
+        if ($query) {
+            \App\Models\SearchLog::create([
+                'query' => $query,
+                'results_count' => $posts->total(),
+                'ip_address' => $request->ip(),
+            ]);
+        }
 
         return view('search.index', compact('posts', 'query'));
     }

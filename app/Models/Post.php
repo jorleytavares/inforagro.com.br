@@ -53,4 +53,10 @@ class Post extends Model
     {
         return $this->belongsToMany(Tag::class, 'post_tags');
     }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'published')
+                     ->where('published_at', '<=', now());
+    }
 }
