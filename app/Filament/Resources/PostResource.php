@@ -27,7 +27,9 @@ class PostResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->schema([
                 Forms\Components\Grid::make(3) // Cria um grid de 3 colunas
+
                     ->schema([
                         // COLUNA PRINCIPAL (Esqueda via ocupar 2/3)
                         Forms\Components\Group::make()
@@ -136,6 +138,7 @@ class PostResource extends Resource
                             ])
                             ->columnSpan(1), // Ocupa 1 coluna
                     ]),
+            ]);
     }
 
     public static function table(Table $table): Table
