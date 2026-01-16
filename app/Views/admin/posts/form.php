@@ -212,56 +212,52 @@
 <!-- TinyMCE CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-// Inicializar TinyMCE Profissional
-tinymce.init({
-    selector: '.tinymce-editor',
-    height: 600,
-    menubar: true, // Habilitar menu superior
-    statusbar: true,
-    language: 'pt_BR',
-    plugins: [
-        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-        'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample',
-        'emoticons', 'directionality', 'nonbreaking', 'pagebreak', 'visualchars'
-    ],
-    // Toolbar Profissional estilo Clássico
-    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | fullscreen code',
-    
-    // Configurações de estilo e fonte
-    font_family_formats: 'Inter=Inter,sans-serif;Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Book Antiqua=book antiqua,palatino;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Times New Roman=times new roman,times;Verdana=verdana,geneva',
-    
-    content_style: `
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-        body { font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.7; color: #333; max-width: 850px; margin: 0 auto; padding: 20px; }
-        h1,h2,h3,h4,h5,h6 { font-weight: 600; margin-top: 1.5em; margin-bottom: 0.5em; }
-        p { margin-bottom: 1em; }
-        img { max-width: 100%; height: auto; border-radius: 4px; }
-    `,
-    
-    // Upload de Imagens
-    images_upload_url: '/admin/media/tinymce-upload?token=<?= $tinymceToken ?? "" ?>',
-    automatic_uploads: true,
-    file_picker_types: 'image media',
-    image_title: true,
-    image_caption: true,
-    
-    // Reutilizar o callback existente se necessário, mas melhorando a integração
-    file_picker_callback: function (cb, value, meta) {
-        // Guardar callback globalmente
-        window.tinyMceCallback = cb;
-        // Abrir media picker
-        window.open('/admin/media?picker=1&type=' + meta.filetype, 'media-picker', 'width=900,height=600');
+// Inicializar TinyMCE quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function() {
+    tinymce.init({
+        selector: '.tinymce-editor', // Garante que seleciona pela classe correta
+        height: 600,
+        menubar: true,
+        statusbar: true,
+        language: 'pt_BR',
+        skin: 'oxide', // Skin padrão claro e profissional
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample',
+            'emoticons', 'directionality', 'nonbreaking', 'pagebreak', 'visualchars'
+        ],
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | fullscreen code',
+        
+        font_family_formats: 'Inter=Inter,sans-serif;Arial=arial,helvetica,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Times New Roman=times new roman,times;Verdana=verdana,geneva',
+        
+        content_style: `
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+            body { font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.7; color: #333; max-width: 850px; margin: 0 auto; padding: 20px; }
+            h1,h2,h3,h4,h5,h6 { font-weight: 600; margin-top: 1.5em; margin-bottom: 0.5em; }
+            p { margin-bottom: 1em; }
+            img { max-width: 100%; height: auto; border-radius: 4px; }
+        `,
+        
+        images_upload_url: '/admin/media/tinymce-upload?token=<?= $tinymceToken ?? "" ?>',
+        automatic_uploads: true,
+        file_picker_types: 'image media',
+        image_title: true,
+        image_caption: true,
+        
+        file_picker_callback: function (cb, value, meta) {
+            window.tinyMceCallback = cb;
+            window.open('/admin/media?picker=1&type=' + meta.filetype, 'media-picker', 'width=900,height=600');
+        }
+    });
+
+    window.selectMediaForTiny = function(url) {
+        if (window.tinyMceCallback) {
+            window.tinyMceCallback(url);
+            window.tinyMceCallback = null;
+        }
     }
 });
-
-// Adicionar listener global para o media picker
-window.selectMediaForTiny = function(url) {
-    if (window.tinyMceCallback) {
-        window.tinyMceCallback(url);
-        window.tinyMceCallback = null;
-    }
-}
 
 // Auto-gerar slug a partir do título
 document.getElementById('title').addEventListener('blur', function() {
