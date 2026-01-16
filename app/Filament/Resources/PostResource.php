@@ -122,14 +122,20 @@ class PostResource extends Resource
                     ->label('Categoria')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'draft' => 'Rascunho',
+                        'published' => 'Publicado',
+                        default => $state,
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'draft' => 'gray',
                         'published' => 'success',
                     }),
                 Tables\Columns\TextColumn::make('published_at')
                     ->label('Publicado em')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
             ->filters([

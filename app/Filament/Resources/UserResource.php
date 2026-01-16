@@ -70,6 +70,12 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('role')
                     ->label('Função')
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'admin' => 'Administrador',
+                        'editor' => 'Editor',
+                        'author' => 'Autor',
+                        default => $state,
+                    })
                     ->colors([
                         'danger' => 'admin',
                         'warning' => 'editor',
