@@ -69,28 +69,41 @@ class MediaController extends DashboardController
     {
         header('Content-Type: application/json');
         
+        // DEBUG LOGGING
+        $logFile = ROOT_PATH . '/debug_upload.txt';
+        $log = function($msg) use ($logFile) {
+            file_put_contents($logFile, date('[Y-m-d H:i:s] ') . $msg . PHP_EOL, FILE_APPEND);
+        };
+
+        $log("Upload Started");
+
         // Verificar CSRF via header
         $csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? $_POST['_csrf'] ?? '';
         if (empty($csrfToken) || !hash_equals($_SESSION['csrf_token'] ?? '', $csrfToken)) {
+            $log("CSRF Fail. Sent: '$csrfToken', Session: '" . ($_SESSION['csrf_token'] ?? 'null') . "'");
             echo json_encode(['success' => false, 'error' => 'Token de segurança inválido']);
             return;
         }
         
         if (!isset($_FILES['file'])) {
+            $log("No file key in \$_FILES");
             echo json_encode(['success' => false, 'error' => 'Nenhum arquivo enviado']);
             return;
         }
         
         $file = $_FILES['file'];
+        $log("File info: " . json_encode($file));
         
         // Validar tipo
         if (!in_array($file['type'], $this->allowedTypes)) {
+            $log("Invalid type: " . $file['type']);
             echo json_encode(['success' => false, 'error' => 'Tipo de arquivo não permitido']);
             return;
         }
         
         // Validar tamanho
         if ($file['size'] > $this->maxSize) {
+            $log("File too large");
             echo json_encode(['success' => false, 'error' => 'Arquivo muito grande (máx 5MB)']);
             return;
         }
@@ -102,14 +115,28 @@ class MediaController extends DashboardController
         // Criar diretório se não existir
         $uploadDir = ROOT_PATH . '/public/uploads/' . date('Y-m');
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
+            $log("Creating dir: $uploadDir");
+            if (!mkdir($uploadDir, 0777, true)) { // Trying 0777 temporarily
+                $log("Failed to create dir");
+                echo json_encode(['success' => false, 'error' => 'Erro ao criar diretório']);
+                return;
+            }
         }
         
         $destination = ROOT_PATH . '/public/uploads/' . $filename;
+        $log("Destination: $destination");
         
         if (move_uploaded_file($file['tmp_name'], $destination)) {
+            $log("Move uploaded file success");
+            
             // Processar Imagem (Resize + Conversão AVIF/WebP)
-            $finalFilename = $this->processImage($destination, $filename);
+            try {
+                $finalFilename = $this->processImage($destination, $filename);
+                $log("Processed filename: $finalFilename");
+            } catch (\Exception $e) {
+                $log("Process Image Exception: " . $e->getMessage());
+                $finalFilename = $filename; // Fallback
+            }
             
             echo json_encode([
                 'success' => true,
@@ -117,6 +144,7 @@ class MediaController extends DashboardController
                 'filename' => basename($finalFilename),
             ]);
         } else {
+            $log("move_uploaded_file failed. Error: " . error_get_last()['message'] ?? 'Unknown');
             echo json_encode(['success' => false, 'error' => 'Erro ao salvar arquivo']);
         }
     }
