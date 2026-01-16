@@ -1,42 +1,19 @@
 {
-    "name": "InforAgro - Portal do Agronegócio Brasileiro",
-    "short_name": "InforAgro",
-    "description": "Portal de notícias, análises e referências sobre o agronegócio brasileiro. Agricultura, pecuária, mercado agro, sustentabilidade e mundo pet.",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#1a1f14",
-    "theme_color": "#5F7D4E",
-    "orientation": "portrait-primary",
-    "lang": "pt-BR",
-    "categories": [
-        "news",
-        "business"
-    ],
+    "name": "InfoRagro",
+    "short_name": "InfoRagro",
     "icons": [
         {
-            "src": "/assets/images/icon-192.png",
+            "src": "/assets/images/android-chrome-192x192.png",
             "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
+            "type": "image/png"
         },
         {
-            "src": "/assets/images/icon-512.png",
+            "src": "/assets/images/android-chrome-512x512.png",
             "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
+            "type": "image/png"
         }
     ],
-    "screenshots": [],
-    "shortcuts": [
-        {
-            "name": "Agricultura",
-            "url": "/agricultura-e-pecuaria",
-            "description": "Notícias de Agricultura"
-        },
-        {
-            "name": "Agronegócio",
-            "url": "/agronegocio",
-            "description": "Mercado do Agronegócio"
-        }
-    ]
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
 }
