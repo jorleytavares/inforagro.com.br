@@ -1,213 +1,330 @@
 <?php
-// Garantir variáveis padrão
+// Variáveis e IDs
 $isEdit = $isEdit ?? false;
 $post = $post ?? [];
 $id = $post['id'] ?? null;
 ?>
 
-<!-- Layout Container -->
-<div class="row">
-    <div class="col-md-12">
-        <h2 class="mb-4"><?= $isEdit ? 'Editar Post' : 'Criar Novo Post' ?></h2>
+<!-- Estilos Customizados para "WordPress-Look" -->
+<style>
+    /* Layout Base */
+    .editor-layout {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+    .editor-main {
+        flex: 1;
+        min-width: 0; /* Previne overflow flex */
+    }
+    .editor-sidebar {
+        width: 300px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 20px;
+    }
+
+    /* Mobile Breakpoint - Força coluna única em telas pequenas */
+    @media (max-width: 991px) {
+        .editor-layout {
+            flex-direction: column;
+        }
+        .editor-sidebar {
+            width: 100%;
+            position: static;
+        }
+    }
+
+    /* Estilo "WordPress" - Título */
+    .wp-title-input {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 1.7rem;
+        font-weight: 600;
+        border: none;
+        background: transparent;
+        outline: none;
+        color: #1a202c;
+    }
+    .wp-title-input::placeholder {
+        color: #a0aec0;
+    }
+
+    /* Estilo "WordPress" - Editor */
+    .wp-editor-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+    
+    .ql-toolbar.ql-snow {
+        border: none !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        background: #f8fafc;
+        padding: 12px !important;
+    }
+    .ql-container.ql-snow {
+        border: none !important;
+        font-family: 'Georgia', 'Times New Roman', serif; /* Serif para escrita confortável */
+        font-size: 1.1rem;
+    }
+    .ql-editor {
+        min-height: 500px;
+        padding: 24px 32px;
+        line-height: 1.8;
+    }
+
+    /* Estilo Sidebar Components */
+    .wp-panel {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .wp-panel-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f1f5f9;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #1e293b;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+    .wp-panel-body {
+        padding: 16px;
+    }
+
+    /* Imagem Destacada */
+    .featured-image-box {
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 6px;
+        min-height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        overflow: hidden;
+        position: relative;
+    }
+    .featured-image-box:hover {
+        border-color: #94a3b8;
+        background: #f1f5f9;
+    }
+    .featured-image-preview {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Categorias */
+    .category-checklist {
+        max-height: 240px;
+        overflow-y: auto;
+        border: 1px solid #f1f5f9;
+        border-radius: 4px;
+        padding: 8px;
+        background: #fcfcfc;
+    }
+</style>
+
+<form action="<?= $isEdit ? "/admin/posts/{$id}/update" : "/admin/posts/store" ?>" method="POST" id="postForm">
+    <?= $csrfField ?? '' ?>
+    
+    <div class="editor-layout">
         
-        <form action="<?= $isEdit ? "/admin/posts/{$id}/update" : "/admin/posts/store" ?>" method="POST" id="postForm">
-            <?= $csrfField ?? '' ?>
+        <!-- ============================================== -->
+        <!-- COLUNA PRINCIPAL (Esquerda) -->
+        <!-- ============================================== -->
+        <main class="editor-main">
             
-            <div class="row">
-                <!-- Coluna Principal (Conteúdo) -->
-                <div class="col-md-9">
+            <div class="mb-4">
+                <input type="text" class="wp-title-input" id="title" name="title" 
+                       value="<?= htmlspecialchars($post['title'] ?? '') ?>" required 
+                       placeholder="Adicionar título" autocomplete="off">
+                       
+                <!-- Subtítulo e Slug (Discretos) -->
+                <div class="d-flex gap-3 align-items-center mt-2">
+                    <input type="text" class="form-control form-control-sm border-0 bg-transparent text-muted ps-0" 
+                           id="subtitle" name="subtitle" 
+                           value="<?= htmlspecialchars($post['subtitle'] ?? '') ?>" 
+                           placeholder="Adicionar subtítulo (opcional)">
                     
-                    <!-- Card Título e Conteúdo -->
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-body">
-                            
-                            <!-- Linha Título e Subtítulo -->
-                            <div class="row mb-3">
-                                <div class="col-md-7">
-                                    <label for="title" class="form-label fw-bold">Título</label>
-                                    <input type="text" class="form-control form-control-lg" id="title" name="title" 
-                                           value="<?= htmlspecialchars($post['title'] ?? '') ?>" required 
-                                           placeholder="Digite o título...">
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="subtitle" class="form-label">Subtítulo (Opcional)</label>
-                                    <input type="text" class="form-control form-control-lg" id="subtitle" name="subtitle" 
-                                           value="<?= htmlspecialchars($post['subtitle'] ?? '') ?>" 
-                                           placeholder="Gancho curto...">
-                                </div>
-                            </div>
-
-                            <!-- Slug Hidden -->
-                            <input type="hidden" id="slug" name="slug" value="<?= htmlspecialchars($post['slug'] ?? '') ?>">
-                            
-                            <!-- Editor Quill -->
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Conteúdo</label>
-                                
-                                <!-- Toolbar container será gerado automaticamente pelo Quill -->
-                                <div id="editor" style="height: 500px; background: white;"></div>
-                                <input type="hidden" name="content" id="content">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Card SEO / Schema -->
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header bg-light">
-                            <h5 class="card-title mb-0">Configurações de SEO</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="meta_title" class="form-label">Meta Title (Opcional)</label>
-                                <input type="text" class="form-control" id="meta_title" name="meta_title" 
-                                       value="<?= htmlspecialchars($post['meta_title'] ?? '') ?>" maxlength="60">
-                                <div class="form-text">Deixe em branco para usar o título do post.</div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="meta_description" class="form-label">Meta Description</label>
-                                <textarea class="form-control" id="meta_description" name="meta_description" rows="2" maxlength="160"><?= htmlspecialchars($post['meta_description'] ?? '') ?></textarea>
-                            </div>
-
-                            <hr>
-                            
-                            <div class="mb-3">
-                                <label for="custom_schema" class="form-label">Schema JSON-LD Adicional</label>
-                                <textarea class="form-control font-monospace config-code" id="custom_schema" name="custom_schema" rows="5" 
-                                          style="font-size: 13px; color: #d63384; background: #f8f9fa;"
-                                          placeholder='<script type="application/ld+json">...</script>'><?= htmlspecialchars($post['custom_schema'] ?? '') ?></textarea>
-                            </div>
-                        </div>
-                    </div>
+                    <input type="hidden" id="slug" name="slug" value="<?= htmlspecialchars($post['slug'] ?? '') ?>">
                 </div>
+            </div>
 
-                <!-- Coluna Lateral (Sidebar) -->
-                <div class="col-md-3">
-                    
-                    <!-- Card Publicar -->
-                    <div class="card mb-3 shadow-sm">
-                        <div class="card-header bg-primary text-white">
-                            <h6 class="mb-0">Publicação</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">Status</label>
-                                <select name="status" class="form-select">
-                                    <option value="draft" <?= ($post['status'] ?? '') === 'draft' ? 'selected' : '' ?>>Rascunho</option>
-                                    <option value="published" <?= ($post['status'] ?? '') === 'published' ? 'selected' : '' ?>>Publicado</option>
-                                    <option value="pending" <?= ($post['status'] ?? '') === 'pending' ? 'selected' : '' ?>>Pendente</option>
-                                </select>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Autor</label>
-                                <select name="author_id" class="form-select">
-                                    <?php foreach ($authors as $author): ?>
-                                    <option value="<?= $author['id'] ?>" <?= ($post['author_id'] ?? 1) == $author['id'] ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($author['name']) ?>
-                                    </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary"><?= $isEdit ? 'Atualizar' : 'Publicar' ?></button>
-                                <?php if($isEdit): ?>
-                                <a href="/admin/posts" class="btn btn-outline-secondary">Cancelar</a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
+            <!-- EDITOR VISUAL -->
+            <div class="wp-editor-card mb-4">
+                <!-- O Quill vai injetar a toolbar aqui automaticamente -->
+                <div id="editor"></div>
+                <!-- Input oculto que recebe o valor -->
+                <input type="hidden" name="content" id="content">
+            </div>
+
+            <!-- SEO & SCHEMA (Accordions) -->
+            <div class="accordion" id="seoAccordion">
+                <div class="wp-panel">
+                    <div class="wp-panel-header" onclick="togglePanel('seoBody')">
+                        <span>Otimização para Motores de Busca (SEO)</span>
+                        <span class="small text-muted">▼</span>
                     </div>
-
-                    <!-- Card Categorias -->
-                    <div class="card mb-3 shadow-sm">
-                        <div class="card-header bg-light">
-                            <h6 class="mb-0">Categoria</h6>
+                    <div id="seoBody" class="wp-panel-body" style="display: none;">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Meta Title</label>
+                            <input type="text" name="meta_title" class="form-control" value="<?= htmlspecialchars($post['meta_title'] ?? '') ?>">
                         </div>
-                        <div class="card-body category-list-scroll" style="max-height: 200px; overflow-y: auto;">
-                            <?php foreach ($categories as $cat): ?>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="category_id" id="cat_<?= $cat['id'] ?>" value="<?= $cat['id'] ?>" 
-                                    <?= ($post['category_id'] ?? '') == $cat['id'] ? 'checked' : '' ?> required>
-                                <label class="form-check-label" for="cat_<?= $cat['id'] ?>">
-                                    <?= htmlspecialchars($cat['name']) ?>
-                                </label>
-                            </div>
-                            <?php endforeach; ?>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Meta Description</label>
+                            <textarea name="meta_description" class="form-control" rows="2"><?= htmlspecialchars($post['meta_description'] ?? '') ?></textarea>
                         </div>
-                    </div>
-
-                    <!-- Card Imagem Destacada -->
-                    <div class="card mb-3 shadow-sm">
-                        <div class="card-header bg-light">
-                            <h6 class="mb-0">Imagem de Capa</h6>
-                        </div>
-                        <div class="card-body text-center">
-                            <div class="mb-2 img-preview-container" style="background: #e9ecef; min-height: 120px; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                <img id="preview-image" src="<?= htmlspecialchars($post['featured_image'] ?? '') ?>" 
-                                     style="max-width: 100%; display: <?= empty($post['featured_image']) ? 'none' : 'block' ?>;">
-                                <span class="text-muted small" id="preview-placeholder" style="display: <?= empty($post['featured_image']) ? 'block' : 'none' ?>;">Sem imagem</span>
-                            </div>
-                            
-                            <input type="hidden" name="featured_image" id="featured_image" value="<?= htmlspecialchars($post['featured_image'] ?? '') ?>">
-                            
-                            <div class="btn-group w-100 btn-group-sm">
-                                <button type="button" class="btn btn-outline-primary" onclick="openMediaPicker()">Selecionar</button>
-                                <button type="button" class="btn btn-outline-danger" onclick="clearImage()">Remover</button>
-                            </div>
-                            
-                            <div class="mt-2">
-                                <input type="text" name="featured_image_caption" class="form-control form-control-sm" placeholder="Legenda da foto" value="<?= htmlspecialchars($post['featured_image_caption'] ?? '') ?>">
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Schema Customizado (JSON-LD)</label>
+                            <textarea name="custom_schema" class="form-control font-monospace" rows="4" style="font-size: 12px;"><?= htmlspecialchars($post['custom_schema'] ?? '') ?></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
-</div>
 
-<!-- Scripts Essenciais (Local Assets to bypass CSP) -->
+        </main>
+
+        <!-- ============================================== -->
+        <!-- SIDEBAR (Direita) -->
+        <!-- ============================================== -->
+        <aside class="editor-sidebar">
+            
+            <!-- PUBLICAR -->
+            <div class="wp-panel">
+                <div class="wp-panel-header">Publicar</div>
+                <div class="wp-panel-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <button type="submit" name="status" value="draft" class="btn btn-outline-secondary btn-sm">Salvar Rascunho</button>
+                        <button type="button" class="btn btn-link btn-sm text-decoration-none text-danger" onclick="location.href='/admin/posts'">Cancelar</button>
+                    </div>
+                    
+                    <div class="mb-3 small">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Status:</span>
+                            <strong class="text-capitalize"><?= $post['status'] ?? 'Rascunho' ?></strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Visibilidade:</span>
+                            <strong>Público</strong>
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" name="status" value="published" class="btn btn-primary">
+                            <?= $isEdit ? 'Atualizar Post' : 'Publicar' ?>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORIAS -->
+            <div class="wp-panel">
+                <div class="wp-panel-header">Categorias</div>
+                <div class="wp-panel-body">
+                    <div class="category-checklist">
+                        <?php foreach ($categories as $cat): ?>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="category_id" id="cat_<?= $cat['id'] ?>" 
+                                   value="<?= $cat['id'] ?>" <?= ($post['category_id'] ?? '') == $cat['id'] ? 'checked' : '' ?> required>
+                            <label class="form-check-label small" for="cat_<?= $cat['id'] ?>">
+                                <?= htmlspecialchars($cat['name']) ?>
+                            </label>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="mt-2 text-end">
+                        <a href="/admin/categories" target="_blank" class="small text-decoration-underline">Nova Categoria</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMAGEM DESTACADA -->
+            <div class="wp-panel">
+                <div class="wp-panel-header">Imagem Destacada</div>
+                <div class="wp-panel-body">
+                    <div class="featured-image-box" onclick="openMediaPicker()">
+                        <img id="feat-img-preview" src="<?= htmlspecialchars($post['featured_image'] ?? '') ?>" 
+                             class="featured-image-preview" style="<?= empty($post['featured_image']) ? 'display:none' : '' ?>">
+                        
+                        <div id="feat-img-placeholder" style="<?= !empty($post['featured_image']) ? 'display:none' : '' ?>" class="text-center text-muted">
+                            <span style="font-size: 24px;">🖼️</span><br>
+                            <span class="small">Definir imagem destacada</span>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="featured_image" id="featured_image" value="<?= htmlspecialchars($post['featured_image'] ?? '') ?>">
+                    
+                    <div id="feat-img-remove" class="mt-2 text-center" style="<?= empty($post['featured_image']) ? 'display:none' : '' ?>">
+                        <button type="button" class="btn btn-link btn-sm text-danger p-0" onclick="removeFeaturedImage()">Remover imagem destacada</button>
+                    </div>
+                    
+                    <div class="mt-2">
+                        <input type="text" name="featured_image_caption" class="form-control form-control-sm" placeholder="Legenda da imagem" value="<?= htmlspecialchars($post['featured_image_caption'] ?? '') ?>">
+                    </div>
+                </div>
+            </div>
+
+            <!-- AUTO-SAVE NOTICE -->
+             <div class="text-center text-muted small mt-2">
+                 Autores disponíveis: <?= count($authors) ?>
+                 <input type="hidden" name="author_id" value="<?= $post['author_id'] ?? ($_SESSION['user_id'] ?? 1) ?>">
+             </div>
+
+        </aside>
+
+    </div>
+</form>
+
+<!-- Scripts Locais (Quill) -->
 <link href="/assets/css/quill.snow.css" rel="stylesheet">
 <script src="/assets/js/quill.min.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Configurar Quill
-    var quill = new Quill('#editor', {
-        theme: 'snow',
-        placeholder: 'Escreva seu texto aqui...',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, 3, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                ['blockquote', 'code-block'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'color': [] }, { 'background': [] }],
-                ['link', 'image', 'video'],
-                ['clean']
-            ]
-        }
-    });
-
-    // 2. Carregar Conteúdo Seguro
-    var initialContent = <?= json_encode($post['content'] ?? '') ?>;
-    if (initialContent) {
-        quill.root.innerHTML = initialContent;
+    // Toggle Panel Function
+    function togglePanel(id) {
+        var el = document.getElementById(id);
+        el.style.display = el.style.display === 'none' ? 'block' : 'none';
     }
 
-    // 3. Sync no Submit
-    var form = document.getElementById('postForm');
-    form.onsubmit = function() {
-        var content = document.querySelector('input[name=content]');
-        content.value = quill.root.innerHTML;
-    };
+    document.addEventListener('DOMContentLoaded', function() {
+        // Init Quill
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Comece a escrever...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [2, 3, 4, false] }],
+                    ['bold', 'italic', 'underline', 'link'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['blockquote', 'image', 'clean']
+                ]
+            }
+        });
 
-    // 4. Slug Generator
-    var title = document.getElementById('title');
-    var slug = document.getElementById('slug');
-    if(title) {
-        title.addEventListener('blur', function() {
+        // Load Content
+        try {
+            var content = <?= json_encode($post['content'] ?? '') ?>;
+            if(content) quill.root.innerHTML = content;
+        } catch(e){}
+
+        // Sync Form
+        document.getElementById('postForm').addEventListener('submit', function() {
+            document.getElementById('content').value = quill.root.innerHTML;
+        });
+
+        // Sticky Title to Slug
+        document.getElementById('title').addEventListener('blur', function() {
+            var slug = document.getElementById('slug');
             if(!slug.value) {
                 slug.value = this.value.toLowerCase()
                     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -215,25 +332,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     .replace(/^-+|-+$/g, '');
             }
         });
-    }
 
-    // 5. Media Picker (Callback)
-    window.openMediaPicker = function() {
-        window.open('/admin/media?picker=1', 'media_picker', 'width=800,height=600');
-    }
-    
-    window.selectMedia = function(url) {
-        document.getElementById('featured_image').value = url;
-        document.getElementById('preview-image').src = url;
-        document.getElementById('preview-image').style.display = 'block';
-        document.getElementById('preview-placeholder').style.display = 'none';
-    }
+        // Media Picker
+        window.openMediaPicker = function() {
+            window.open('/admin/media?picker=1', 'media_picker', 'width=850,height=600');
+        };
 
-    window.clearImage = function() {
-        document.getElementById('featured_image').value = '';
-        document.getElementById('preview-image').src = '';
-        document.getElementById('preview-image').style.display = 'none';
-        document.getElementById('preview-placeholder').style.display = 'block';
-    }
-});
+        window.selectMedia = function(url) {
+            document.getElementById('featured_image').value = url;
+            document.getElementById('feat-img-preview').src = url;
+            document.getElementById('feat-img-preview').style.display = 'block';
+            document.getElementById('feat-img-placeholder').style.display = 'none';
+            document.getElementById('feat-img-remove').style.display = 'block';
+        };
+
+        window.removeFeaturedImage = function() {
+            document.getElementById('featured_image').value = '';
+            document.getElementById('feat-img-preview').src = '';
+            document.getElementById('feat-img-preview').style.display = 'none';
+            document.getElementById('feat-img-placeholder').style.display = 'block';
+            document.getElementById('feat-img-remove').style.display = 'none';
+        };
+    });
 </script>
