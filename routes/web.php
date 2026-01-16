@@ -24,6 +24,7 @@ Route::controller(\App\Http\Controllers\PageController::class)->group(function (
 });
 
 
+
 // Newsletter
 Route::post('/newsletter', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
