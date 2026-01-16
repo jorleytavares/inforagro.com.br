@@ -155,7 +155,10 @@ class SettingsController extends DashboardController
             "ALTER TABLE posts ADD COLUMN featured_image_caption VARCHAR(255) NULL AFTER featured_image",
             "ALTER TABLE posts ADD COLUMN read_time INT DEFAULT 0 AFTER content",
             "ALTER TABLE posts ADD COLUMN word_count INT DEFAULT 0 AFTER read_time",
-            "ALTER TABLE posts ADD COLUMN custom_schema TEXT NULL AFTER content"
+            "ALTER TABLE posts ADD COLUMN custom_schema TEXT NULL AFTER content",
+            "ALTER TABLE posts ADD COLUMN content_type VARCHAR(50) DEFAULT 'article' AFTER status",
+            "ALTER TABLE posts ADD COLUMN subtitle VARCHAR(255) NULL AFTER title",
+            "ALTER TABLE posts ADD COLUMN published_at DATETIME NULL AFTER status"
         ];
         
         $log = [];
