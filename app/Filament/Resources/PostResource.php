@@ -117,7 +117,9 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(50)
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Categoria')
                     ->sortable(),

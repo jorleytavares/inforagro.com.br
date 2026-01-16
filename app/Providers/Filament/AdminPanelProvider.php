@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->maxContentWidth('full') // Usa largura total da tela
             ->colors([
                 'primary' => Color::Amber,
             ])
