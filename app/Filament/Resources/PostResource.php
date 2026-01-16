@@ -27,85 +27,115 @@ class PostResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Section::make()
+                Forms\Components\Grid::make(3) // Cria um grid de 3 colunas
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->label('Título')
-                            ->required()
-                            ->maxLength(255)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', \Illuminate\Support\Str::slug($state)) : null),
+                        // COLUNA PRINCIPAL (Esqueda via ocupar 2/3)
+                        Forms\Components\Group::make()
+                            ->schema([
+                                Forms\Components\Section::make('Conteúdo Principal')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('title')
+                                            ->label('Título')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', \Illuminate\Support\Str::slug($state)) : null),
 
-                        Forms\Components\TextInput::make('slug')
-                            ->label('Slug (URL)')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique(ignoreRecord: true),
-                            
-                        Forms\Components\TextInput::make('subtitle')
-                            ->label('Subtítulo')
-                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('slug')
+                                            ->label('Slug (URL)')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->unique(ignoreRecord: true),
+                                            
+                                        Forms\Components\TextInput::make('subtitle')
+                                            ->label('Subtítulo')
+                                            ->maxLength(255),
 
-                        Forms\Components\Select::make('category_id')
-                            ->label('Categoria')
-                            ->relationship('category', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload(),
-
-                        Forms\Components\Select::make('author_id')
-                            ->label('Autor')
-                            ->relationship('author', 'name')
-                            ->default(fn () => auth()->id())
-                            ->required()
-                            ->searchable(),
-
-                        Forms\Components\RichEditor::make('content')
-                            ->label('Conteúdo')
-                            ->required()
-                            ->columnSpanFull(),
-
-                        Forms\Components\FileUpload::make('featured_image')
-                            ->label('Imagem Destacada')
-                            ->image()
-                            ->directory('uploads')
-                            ->columnSpanFull(),
-
-                        Forms\Components\TextInput::make('featured_image_caption')
-                            ->label('Legenda da Imagem')
-                            ->maxLength(255)
-                            ->columnSpanFull(),
-
-                        Forms\Components\Select::make('status')
-                            ->label('Status')
-                            ->options([
-                                'draft' => 'Rascunho',
-                                'published' => 'Publicado',
+                                        Forms\Components\RichEditor::make('content')
+                                            ->label('Conteúdo')
+                                            ->required()
+                                            ->columnSpanFull(),
+                                    ]),
                             ])
-                            ->default('draft')
-                            ->required(),
+                            ->columnSpan(2), // Ocupa 2 colunas
 
-                        Forms\Components\DateTimePicker::make('published_at')
-                            ->label('Data de Publicação')
-                            ->default(now()),
+                        // COLUNA LATERAL (Direita vai ocupar 1/3)
+                        Forms\Components\Group::make()
+                            ->schema([
+                                // Seção de Publicação
+                                Forms\Components\Section::make('Publicação')
+                                    ->schema([
+                                        Forms\Components\Select::make('status')
+                                            ->label('Status')
+                                            ->options([
+                                                'draft' => 'Rascunho',
+                                                'published' => 'Publicado',
+                                            ])
+                                            ->default('draft')
+                                            ->required()
+                                            ->native(false), // Estilo melhor para select
 
-                        Forms\Components\Select::make('tags')
-                            ->label('Tags')
-                            ->relationship('tags', 'name')
-                            ->multiple()
-                            ->searchable()
-                            ->preload()
-                            ->createOptionUsing(function (string $data) {
-                                $slug = \Illuminate\Support\Str::slug($data);
-                                $tag = \App\Models\Tag::firstOrCreate(
-                                    ['slug' => $slug],
-                                    ['name' => $data]
-                                );
-                                return $tag->getKey();
-                            }),
-                    ])
-            ]);
+                                        Forms\Components\DateTimePicker::make('published_at')
+                                            ->label('Data de Publicação')
+                                            ->default(now()),
+
+                                        Forms\Components\Select::make('author_id')
+                                            ->label('Autor')
+                                            ->relationship('author', 'name')
+                                            ->default(fn () => auth()->id())
+                                            ->required()
+                                            ->searchable(),
+                                    ]),
+
+                                // Seção de Taxonomias (Categoria e Tags)
+                                Forms\Components\Section::make('Associações')
+                                    ->schema([
+                                        Forms\Components\Select::make('category_id')
+                                            ->label('Categoria')
+                                            ->relationship('category', 'name')
+                                            ->required()
+                                            ->searchable()
+                                            ->preload()
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->required()
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                                                Forms\Components\TextInput::make('slug')->required(),
+                                            ]),
+
+                                        Forms\Components\Select::make('tags')
+                                            ->label('Tags')
+                                            ->relationship('tags', 'name')
+                                            ->multiple()
+                                            ->searchable()
+                                            ->preload()
+                                            ->createOptionUsing(function (string $data) {
+                                                $slug = \Illuminate\Support\Str::slug($data);
+                                                $tag = \App\Models\Tag::firstOrCreate(
+                                                    ['slug' => $slug],
+                                                    ['name' => $data]
+                                                );
+                                                return $tag->getKey();
+                                            }),
+                                    ]),
+                                
+                                // Seção de Imagem Destacada
+                                Forms\Components\Section::make('Mídia')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('featured_image')
+                                            ->label('Imagem Destacada')
+                                            ->image()
+                                            ->directory('uploads')
+                                            ->imageEditor(), // Adiciona editor de imagem simples
+
+                                        Forms\Components\TextInput::make('featured_image_caption')
+                                            ->label('Legenda da Imagem')
+                                            ->maxLength(255),
+                                    ]),
+                            ])
+                            ->columnSpan(1), // Ocupa 1 coluna
+                    ]),
     }
 
     public static function table(Table $table): Table
