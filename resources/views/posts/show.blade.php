@@ -48,7 +48,7 @@
         @if($post->featured_image)
         <figure class="article-featured-image">
             <div class="container container-article">
-                <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" itemprop="image">
+                <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" itemprop="image" style="max-width: 100%; height: auto; width: 100%; border-radius: 12px;">
                 @if($post->featured_image_caption)
                 <figcaption>{{ $post->featured_image_caption }}</figcaption>
                 @endif
