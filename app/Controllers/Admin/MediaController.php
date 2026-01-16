@@ -107,21 +107,18 @@ class MediaController extends DashboardController
         
         $destination = ROOT_PATH . '/public/uploads/' . $filename;
         
-        if (move_uploaded_file($file['tmp_name'], $destination)) {
-            // Otimizar imagem se for JPEG ou PNG
-            $this->optimizeImage($destination, $file['type']);
+            // Processar Imagem (Resize + Conversão AVIF/WebP)
+            $finalFilename = $this->processImage($destination, $filename);
             
             echo json_encode([
                 'success' => true,
-                'url' => '/uploads/' . $filename,
-                'filename' => basename($filename),
+                'url' => '/uploads/' . $finalFilename,
+                'filename' => basename($finalFilename),
             ]);
         } else {
             echo json_encode(['success' => false, 'error' => 'Erro ao salvar arquivo']);
         }
     }
-    
-
     
     /**
      * Deletar arquivo
@@ -163,32 +160,93 @@ class MediaController extends DashboardController
     }
     
     /**
-     * Otimizar imagem
+     * Processar Imagem: Redimensionar e Converter para AVIF
      */
-    private function optimizeImage(string $path, string $type): void
+    private function processImage(string $sourcePath, string $originalFilename): string
     {
-        if (!extension_loaded('gd')) return;
+        if (!extension_loaded('gd')) return $originalFilename;
         
+        $info = getimagesize($sourcePath);
+        if (!$info) return $originalFilename;
+        
+        $mime = $info['mime'];
         $image = null;
         
-        switch ($type) {
-            case 'image/jpeg':
-                $image = imagecreatefromjpeg($path);
-                if ($image) {
-                    imagejpeg($image, $path, 85);
-                }
-                break;
-            case 'image/png':
-                $image = imagecreatefrompng($path);
-                if ($image) {
-                    imagepng($image, $path, 8);
-                }
-                break;
+        // Carregar imagem
+        switch ($mime) {
+            case 'image/jpeg': $image = imagecreatefromjpeg($sourcePath); break;
+            case 'image/png':  $image = imagecreatefrompng($sourcePath); break;
+            case 'image/gif':  $image = imagecreatefromgif($sourcePath); break;
+            case 'image/webp': $image = imagecreatefromwebp($sourcePath); break;
         }
         
-        if ($image) {
+        if (!$image) return $originalFilename;
+
+        // 1. Redimensionar se for muito grande (Max Width 1920px)
+        $rawWidth = imagesx($image);
+        $rawHeight = imagesy($image);
+        $maxWidth = 1920;
+        
+        if ($rawWidth > $maxWidth) {
+            $newHeight = floor($rawHeight * ($maxWidth / $rawWidth));
+            $newImage = imagecreatetruecolor($maxWidth, $newHeight);
+            
+            // Manter transparência
+            if ($mime == 'image/png' || $mime == 'image/webp') {
+                imagealphablending($newImage, false);
+                imagesavealpha($newImage, true);
+                $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+                imagefilledrectangle($newImage, 0, 0, $maxWidth, $newHeight, $transparent);
+            }
+            
+            imagecopyresampled($newImage, $image, 0, 0, 0, 0, $maxWidth, $newHeight, $rawWidth, $rawHeight);
             imagedestroy($image);
+            $image = $newImage;
         }
+
+        // 2. Converter para AVIF (Prioridade) ou WebP (Fallback)
+        $pathInfo = pathinfo($sourcePath);
+        $dirName = $pathInfo['dirname'];
+        $fileBaseName = $pathInfo['filename'];
+        
+        $converted = false;
+        $newLocalFilename = $originalFilename; // Padrão: nome original
+        
+        // Tentar AVIF
+        if (function_exists('imageavif')) {
+            $targetPath = $dirName . '/' . $fileBaseName . '.avif';
+            // Qualidade 60 é excelente para AVIF (equilibrio tamanho/qualidade)
+            if (imageavif($image, $targetPath, 60)) {
+                $converted = true;
+                $newLocalFilename = dirname($originalFilename) . '/' . $fileBaseName . '.avif';
+            }
+        } 
+        // Fallback para WebP se AVIF não disponível
+        elseif (function_exists('imagewebp')) {
+            $targetPath = $dirName . '/' . $fileBaseName . '.webp';
+            if (imagewebp($image, $targetPath, 80)) {
+                $converted = true;
+                $newLocalFilename = dirname($originalFilename) . '/' . $fileBaseName . '.webp';
+            }
+        }
+
+        // Se converteu com sucesso
+        if ($converted && $newLocalFilename !== $originalFilename) {
+            imagedestroy($image);
+            if (file_exists($sourcePath)) unlink($sourcePath); // Deletar original
+            return $newLocalFilename;
+        }
+        
+        // Se não converteu, salvar a versão redimensionada (se houve resize) ou otimizada
+        // Sobrescreve o arquivo original
+        switch ($mime) {
+            case 'image/jpeg': imagejpeg($image, $sourcePath, 85); break;
+            case 'image/png':  imagepng($image, $sourcePath, 8); break; // Compression 0-9
+            case 'image/webp': imagewebp($image, $sourcePath, 85); break;
+        }
+        
+        imagedestroy($image);
+        return $originalFilename;
     }
     
     /**
