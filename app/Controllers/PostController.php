@@ -108,6 +108,7 @@ class PostController extends Controller
     
     /**
      * Gerar schema JSON-LD do artigo
+     * Este método cria automaticamente o markup estruturado para Google (NewsArticle)
      */
     private function generateArticleSchema(array $post): string
     {

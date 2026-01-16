@@ -61,6 +61,7 @@
                     <h3 class="card-title h6 mb-0">Otimização para Motores de Busca (SEO)</h3>
                 </div>
                 <div class="card-body" style="padding: 1rem;">
+                    <!-- Schema Markup (JSON-LD) is actively generated in PostController::generateArticleSchema -->
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
                             <label class="form-label" for="meta_title">Meta Title</label>
