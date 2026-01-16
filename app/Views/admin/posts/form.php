@@ -14,30 +14,31 @@ $id = $post['id'] ?? null;
             <?= $csrfField ?? '' ?>
             
             <div class="row">
-                <!-- Coluna Principal -->
-                <div class="col-lg-9">
+                <!-- Coluna Principal (Conteúdo) -->
+                <div class="col-md-9">
                     
                     <!-- Card Título e Conteúdo -->
                     <div class="card mb-4 shadow-sm">
                         <div class="card-body">
-                            <!-- Título -->
-                            <div class="mb-3">
-                                <label for="title" class="form-label fw-bold">Título</label>
-                                <input type="text" class="form-control form-control-lg" id="title" name="title" 
-                                       value="<?= htmlspecialchars($post['title'] ?? '') ?>" required 
-                                       placeholder="Digite o título do artigo aqui...">
+                            
+                            <!-- Linha Título e Subtítulo -->
+                            <div class="row mb-3">
+                                <div class="col-md-7">
+                                    <label for="title" class="form-label fw-bold">Título</label>
+                                    <input type="text" class="form-control form-control-lg" id="title" name="title" 
+                                           value="<?= htmlspecialchars($post['title'] ?? '') ?>" required 
+                                           placeholder="Digite o título...">
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="subtitle" class="form-label">Subtítulo (Opcional)</label>
+                                    <input type="text" class="form-control form-control-lg" id="subtitle" name="subtitle" 
+                                           value="<?= htmlspecialchars($post['subtitle'] ?? '') ?>" 
+                                           placeholder="Gancho curto...">
+                                </div>
                             </div>
 
                             <!-- Slug Hidden -->
                             <input type="hidden" id="slug" name="slug" value="<?= htmlspecialchars($post['slug'] ?? '') ?>">
-                            
-                            <!-- Subtítulo -->
-                            <div class="mb-3">
-                                <label for="subtitle" class="form-label">Subtítulo</label>
-                                <input type="text" class="form-control" id="subtitle" name="subtitle" 
-                                       value="<?= htmlspecialchars($post['subtitle'] ?? '') ?>" 
-                                       placeholder="Um gancho curto para o artigo (opcional)">
-                            </div>
                             
                             <!-- Editor Quill -->
                             <div class="mb-3">
@@ -80,8 +81,8 @@ $id = $post['id'] ?? null;
                     </div>
                 </div>
 
-                <!-- Coluna Lateral -->
-                <div class="col-lg-3">
+                <!-- Coluna Lateral (Sidebar) -->
+                <div class="col-md-3">
                     
                     <!-- Card Publicar -->
                     <div class="card mb-3 shadow-sm">
