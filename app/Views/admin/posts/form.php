@@ -260,6 +260,22 @@ $id = $post['id'] ?? null;
                 </div>
             </div>
 
+            <!-- TAGS -->
+            <div class="wp-panel">
+                <div class="wp-panel-header">Tags</div>
+                <div class="wp-panel-body">
+                    <input type="text" name="tags" class="form-control form-control-sm" list="tags-list" 
+                           placeholder="Separe com vírgula" 
+                           value="<?= htmlspecialchars(implode(', ', $currentTags ?? [])) ?>">
+                    <datalist id="tags-list">
+                        <?php foreach(($allTags ?? []) as $tag): ?>
+                        <option value="<?= htmlspecialchars($tag) ?>">
+                        <?php endforeach; ?>
+                    </datalist>
+                    <div class="form-text small mt-1">Ex: economia, soja, clima</div>
+                </div>
+            </div>
+
             <!-- IMAGEM DESTACADA -->
             <div class="wp-panel">
                 <div class="wp-panel-header">Imagem Destacada</div>
@@ -287,10 +303,19 @@ $id = $post['id'] ?? null;
             </div>
 
             <!-- AUTO-SAVE NOTICE -->
-             <div class="text-center text-muted small mt-2">
-                 Autores disponíveis: <?= count($authors) ?>
-                 <input type="hidden" name="author_id" value="<?= $post['author_id'] ?? ($_SESSION['user_id'] ?? 1) ?>">
-             </div>
+            <!-- AUTOR -->
+            <div class="wp-panel">
+                <div class="wp-panel-header">Autor</div>
+                <div class="wp-panel-body">
+                    <select name="author_id" class="form-select form-select-sm">
+                        <?php foreach($authors as $author): ?>
+                        <option value="<?= $author['id'] ?>" <?= ($post['author_id'] ?? ($_SESSION['user_id'] ?? 1)) == $author['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($author['name']) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
 
         </aside>
 
