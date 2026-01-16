@@ -218,9 +218,9 @@
     </div>
 </form>
 
-<!-- Quill Editor CDN (CDNJS) -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+<!-- Quill Editor CDN (JSDelivr - Allowed by CSP) -->
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
