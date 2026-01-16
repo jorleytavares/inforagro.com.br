@@ -115,7 +115,6 @@ class PostController extends DashboardController
             
             header('Location: /admin/posts?success=created');
         } catch (\Exception $e) {
-            file_put_contents(ROOT_PATH . '/debug_post.txt', date('[Y-m-d H:i:s] ') . "Store Error: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
             header('Location: /admin/posts/create?error=' . urlencode($e->getMessage()));
         }
         exit;
@@ -173,7 +172,6 @@ class PostController extends DashboardController
             
             header('Location: /admin/posts?success=updated');
         } catch (\Exception $e) {
-            file_put_contents(ROOT_PATH . '/debug_post.txt', date('[Y-m-d H:i:s] ') . "Update Error: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
             header('Location: /admin/posts/' . $id . '/edit?error=' . urlencode($e->getMessage()));
         }
         exit;

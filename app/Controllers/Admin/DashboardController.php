@@ -83,10 +83,6 @@ class DashboardController extends Controller
     protected function verifyCsrf(): void
     {
         if (!Csrf::verify()) {
-            $expected = $_SESSION['csrf_token'] ?? 'null';
-            $received = $_POST['_csrf'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? 'null';
-            file_put_contents(ROOT_PATH . '/debug_csrf.txt', date('[Y-m-d H:i:s] ') . "CSRF Fail. Expected: $expected, Received: $received" . PHP_EOL, FILE_APPEND);
-            
             header('Location: ' . $_SERVER['HTTP_REFERER'] . '?error=' . urlencode('Token de segurança inválido. Tente novamente.'));
             exit;
         }
