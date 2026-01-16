@@ -213,8 +213,10 @@ class PostController extends DashboardController
             'author_id' => (int) ($_POST['author_id'] ?? 1),
             'status' => $_POST['status'] ?? 'draft',
             'content_type' => $_POST['content_type'] ?? 'article',
-            'meta_title' => $_POST['meta_title'] ?? '',
-            'meta_description' => $_POST['meta_description'] ?? '',
+            'content_type' => $_POST['content_type'] ?? 'article',
+            'meta_title' => $title, // Automatic: Same as Title
+            'meta_description' => $this->generateExcerpt($_POST['content'] ?? '', 160), // Automatic: Same as Excerpt
+            'focus_keyword' => $_POST['focus_keyword'] ?? '',
             'focus_keyword' => $_POST['focus_keyword'] ?? '',
             'featured_image' => $_POST['featured_image'] ?? '',
             'featured_image_caption' => $_POST['featured_image_caption'] ?? '',

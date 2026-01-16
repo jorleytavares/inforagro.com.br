@@ -184,16 +184,13 @@ $id = $post['id'] ?? null;
                     </div>
                     <div id="seoBody" class="wp-panel-body" style="display: none;">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">Meta Title</label>
-                            <input type="text" name="meta_title" class="form-control" value="<?= htmlspecialchars($post['meta_title'] ?? '') ?>">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">Meta Description</label>
-                            <textarea name="meta_description" class="form-control" rows="2"><?= htmlspecialchars($post['meta_description'] ?? '') ?></textarea>
-                        </div>
-                        <div class="mb-3">
+                            <p class="text-muted small mb-2">
+                                <i class="icon-info"></i> 
+                                <strong>Nota:</strong> Meta Title e Description são gerados automaticamente a partir do título e do resumo do post.
+                            </p>
                             <label class="form-label small fw-bold text-muted">Schema Customizado (JSON-LD)</label>
                             <textarea name="custom_schema" class="form-control font-monospace" rows="4" style="font-size: 12px;"><?= htmlspecialchars($post['custom_schema'] ?? '') ?></textarea>
+                            <div class="form-text small">Use apenas para schemas específicos (Review, Recipe, etc). O schema Article já é automático.</div>
                         </div>
                     </div>
                 </div>
