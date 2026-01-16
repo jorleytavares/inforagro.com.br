@@ -1,3 +1,20 @@
+<style>
+    .post-thumb {
+        width: 50px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 4px;
+        display: block;
+    }
+    .empty-thumb {
+        width: 50px;
+        height: 36px;
+        background: #e2e8f0;
+        border-radius: 4px;
+        display: block;
+    }
+</style>
+
 <!-- Lista de Posts -->
 <?php if (!empty($_GET['success'])): ?>
 <div class="alert alert-success">
@@ -51,7 +68,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th style="width: 60px;">Img</th>
+                <th style="width: 70px;">Img</th>
                 <th>Título</th>
                 <th>Categoria</th>
                 <th>Autor</th>
@@ -66,9 +83,9 @@
             <tr>
                 <td>
                     <?php if (!empty($post['featured_image'])): ?>
-                        <img src="<?= htmlspecialchars($post['featured_image']) ?>" style="width: 50px; height: 36px; object-fit: cover; border-radius: 4px;" loading="lazy">
+                        <img src="<?= htmlspecialchars($post['featured_image']) ?>" class="post-thumb" loading="lazy" alt="Thumb">
                     <?php else: ?>
-                        <div style="width: 50px; height: 36px; background: #e2e8f0; border-radius: 4px;"></div>
+                        <span class="empty-thumb"></span>
                     <?php endif; ?>
                 </td>
                 <td>
@@ -90,7 +107,7 @@
                 <td>
                     <a href="/admin/posts/<?= $post['id'] ?>/edit" class="btn btn-secondary btn-sm">Editar</a>
                     <form action="/admin/posts/<?= $post['id'] ?>/delete" method="POST" style="display:inline" onsubmit="return confirm('Excluir este post?')">
-                        <?= $csrfField ?? '<input type="hidden" name="_csrf" value="'.($_SESSION['csrf_token'] ?? '').'">' ?>
+                        <?= $csrfField ?? '' ?>
                         <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
                     </form>
                 </td>
