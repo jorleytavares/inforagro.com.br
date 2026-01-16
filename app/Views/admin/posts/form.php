@@ -38,16 +38,7 @@
             </div>
 
             <!-- Resumo -->
-            <div class="card mb-3">
-                <div class="card-header bg-light">
-                    <h3 class="card-title h6 mb-0">Resumo</h3>
-                </div>
-                <div class="card-body" style="padding: 1rem;">
-                    <textarea id="excerpt" name="excerpt" class="form-control" rows="3" 
-                              placeholder="Breve descrição do artigo para listagens e SEO"><?= htmlspecialchars($post['excerpt'] ?? '') ?></textarea>
-                    <small class="text-muted">Opcional. Se vazio, será gerado automaticamente do conteúdo.</small>
-                </div>
-            </div>
+            <!-- Resumo (Removido) -->
             
             <!-- Schema Markup -->
             <div class="card mb-3">
@@ -224,116 +215,135 @@
     </div>
 </form>
 
-<!-- Quill Editor CDN -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<!-- Quill Editor CDN (CDNJS) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
 
 <script>
-// Initialize Quill Editor
-var quill = new Quill('#editor-container', {
-    theme: 'snow',
-    placeholder: 'Escreva seu artigo incr\u00EDvel aqui...',
-    modules: {
-        toolbar: [
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'align': [] }],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            ['link', 'image', 'video', 'blockquote', 'code-block'],
-            ['clean']
-        ]
-    }
-});
-
-// Sync Quill content to hidden input form submit
-var form = document.querySelector('form');
-form.onsubmit = function() {
-    var content = document.querySelector('input[name=content]');
-    content.value = quill.root.innerHTML;
-};
-
-// Auto-fill hidden input on load if editing
-document.querySelector('input[name=content]').value = quill.root.innerHTML;
-// Auto-gerar slug a partir do título
-document.getElementById('title').addEventListener('blur', function() {
-    const slugField = document.getElementById('slug');
-    if (!slugField.value) {
-        let slug = this.value.toLowerCase()
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-|-$/g, '');
-        slugField.value = slug;
-    }
-});
-
-// Seletor de Mídia e Imagem Destacada
-function openMediaPicker() {
-    window.open('/admin/media?picker=1', 'media-picker', 'width=900,height=600');
-}
-
-window.selectMedia = function(url) {
-    const input = document.getElementById('featured_image');
-    if (input) input.value = url;
-    
-    // Atualizar Preview
-    const previewImg = document.getElementById('preview-img');
-    if(previewImg) previewImg.src = url;
-    
-    const emptyState = document.getElementById('featured-image-empty');
-    if(emptyState) emptyState.style.display = 'none';
-    
-    const filledState = document.getElementById('featured-image-filled');
-    if(filledState) filledState.style.display = 'block';
-};
-
-window.removeFeaturedImage = function() {
-    document.getElementById('featured_image').value = '';
-    document.getElementById('preview-img').src = '';
-    document.getElementById('featured-image-filled').style.display = 'none';
-    document.getElementById('featured-image-empty').style.display = 'block';
-};
-
-// Tags System
-let tags = <?= json_encode($currentTags ?? []) ?>;
-const tagsContainer = document.getElementById('tags-visual-list');
-const tagsInput = document.getElementById('tag-input');
-const tagsHidden = document.getElementById('tags-hidden');
-
-function renderTags() {
-    tagsContainer.innerHTML = '';
-    tags.forEach((tag, index) => {
-        const chip = document.createElement('span');
-        chip.className = 'tag-chip';
-        chip.innerHTML = `${tag} <button type="button" onclick="removeTag(${index})">&times;</button>`;
-        tagsContainer.appendChild(chip);
-    });
-    tagsHidden.value = tags.join(',');
-}
-
-function addTag(name) {
-    name = name.trim();
-    if (!name) return;
-    if (!tags.includes(name)) {
-        tags.push(name);
-        renderTags();
-    }
-    tagsInput.value = '';
-}
-
-window.removeTag = function(index) {
-    tags.splice(index, 1);
-    renderTags();
-}
-
-if(tagsInput) {
-    tagsInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ',') {
-            e.preventDefault();
-            addTag(this.value);
+document.addEventListener('DOMContentLoaded', function() {
+    // ----------------------------------------------------
+    // QUILL EDITOR SETUP
+    // ----------------------------------------------------
+    var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        placeholder: 'Escreva seu artigo aqui...',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'align': [] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image', 'video', 'blockquote', 'code-block'],
+                ['clean']
+            ]
         }
     });
-}
 
-renderTags();
+    // Sincronizar (e preencher inicialmente) o input hidden
+    var contentInput = document.querySelector('input[name=content]');
+    if (contentInput && contentInput.value) {
+        // Se já tem valor (edição ou erro de validação), joga pro Quill
+        // Mas atenção: se inicializou vazio, o Quill já está vazio.
+        // Se o PHP renderizou o conteúdo dentro da DIV, o Quill pega automaticamente.
+    }
+    
+    // Ao enviar form, atualiza o input
+    var form = document.querySelector('form');
+    form.onsubmit = function() {
+        if (contentInput) {
+            contentInput.value = quill.root.innerHTML;
+        }
+    };
+
+    // ----------------------------------------------------
+    // OUTRAS FUNÇÕES (Slug, Tags, Imagem)
+    // ----------------------------------------------------
+
+    // Auto-gerar slug a partir do título
+    var titleInput = document.getElementById('title');
+    if(titleInput) {
+        titleInput.addEventListener('blur', function() {
+            const slugField = document.getElementById('slug');
+            if (slugField && !slugField.value) {
+                let slug = this.value.toLowerCase()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-|-$/g, '');
+                slugField.value = slug;
+            }
+        });
+    }
+
+    // Seletor de Mídia e Imagem Destacada
+    window.openMediaPicker = function() {
+        window.open('/admin/media?picker=1', 'media-picker', 'width=900,height=600');
+    }
+
+    window.selectMedia = function(url) {
+        const input = document.getElementById('featured_image');
+        if (input) input.value = url;
+        
+        // Atualizar Preview
+        const previewImg = document.getElementById('preview-img');
+        if(previewImg) previewImg.src = url;
+        
+        const emptyState = document.getElementById('featured-image-empty');
+        if(emptyState) emptyState.style.display = 'none';
+        
+        const filledState = document.getElementById('featured-image-filled');
+        if(filledState) filledState.style.display = 'block';
+    };
+
+    window.removeFeaturedImage = function() {
+        document.getElementById('featured_image').value = '';
+        document.getElementById('preview-img').src = '';
+        document.getElementById('featured-image-filled').style.display = 'none';
+        document.getElementById('featured-image-empty').style.display = 'block';
+    };
+
+    // Tags System
+    let tags = <?= json_encode($currentTags ?? []) ?>;
+    const tagsContainer = document.getElementById('tags-visual-list');
+    const tagsInput = document.getElementById('tag-input');
+    const tagsHidden = document.getElementById('tags-hidden');
+
+    function renderTags() {
+        if(!tagsContainer) return;
+        tagsContainer.innerHTML = '';
+        tags.forEach((tag, index) => {
+            const chip = document.createElement('span');
+            chip.className = 'tag-chip';
+            chip.innerHTML = `${tag} <button type="button" onclick="removeTag(${index})">&times;</button>`;
+            tagsContainer.appendChild(chip);
+        });
+        if(tagsHidden) tagsHidden.value = tags.join(',');
+    }
+
+    function addTag(name) {
+        name = name.trim();
+        if (!name) return;
+        if (!tags.includes(name)) {
+            tags.push(name);
+            renderTags();
+        }
+        if(tagsInput) tagsInput.value = '';
+    }
+
+    window.removeTag = function(index) {
+        tags.splice(index, 1);
+        renderTags();
+    }
+
+    if(tagsInput) {
+        tagsInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                addTag(this.value);
+            }
+        });
+    }
+
+    renderTags();
+});
 </script>
