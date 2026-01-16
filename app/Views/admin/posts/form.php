@@ -38,16 +38,18 @@ $id = $post['id'] ?? null;
     /* Estilo "WordPress" - Título */
     .wp-title-input {
         width: 100%;
-        padding: 10px 0;
-        font-size: 1.7rem;
-        font-weight: 600;
+        padding: 15px 0;
+        font-size: 2rem; /* Maior e mais impactante */
+        font-weight: 700;
         border: none;
         background: transparent;
         outline: none;
         color: #1a202c;
+        line-height: 1.2;
     }
     .wp-title-input::placeholder {
-        color: #a0aec0;
+        color: #cbd5e1;
+        font-weight: 600;
     }
 
     /* Estilo "WordPress" - Editor */
@@ -67,13 +69,18 @@ $id = $post['id'] ?? null;
     }
     .ql-container.ql-snow {
         border: none !important;
-        font-family: 'Georgia', 'Times New Roman', serif; /* Serif para escrita confortável */
-        font-size: 1.1rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Fonte moderna */
+        font-size: 1.05rem;
+        color: #2d3748;
     }
     .ql-editor {
         min-height: 500px;
-        padding: 24px 32px;
-        line-height: 1.8;
+        padding: 30px 40px; /* Mais espaço interno */
+        line-height: 1.75;
+    }
+    .ql-editor.ql-blank::before {
+        font-style: normal; /* Remove itálico do placeholder */
+        color: #a0aec0;
     }
 
     /* Estilo Sidebar Components */
@@ -203,26 +210,34 @@ $id = $post['id'] ?? null;
             <div class="wp-panel">
                 <div class="wp-panel-header">Publicar</div>
                 <div class="wp-panel-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <button type="submit" name="status" value="draft" class="btn btn-outline-secondary btn-sm">Salvar Rascunho</button>
-                        <button type="button" class="btn btn-link btn-sm text-decoration-none text-danger" onclick="location.href='/admin/posts'">Cancelar</button>
-                    </div>
                     
-                    <div class="mb-3 small">
-                        <div class="d-flex justify-content-between mb-1">
+                    <div class="d-grid gap-2 mb-3">
+                         <button type="submit" name="status" value="draft" class="btn btn-outline-secondary btn-sm" style="font-weight: 500;">
+                            📂 Salvar Rascunho
+                         </button>
+                    </div>
+
+                    <div class="mb-4 small text-muted">
+                        <div class="d-flex justify-content-between mb-2">
                             <span>Status:</span>
-                            <strong class="text-capitalize"><?= $post['status'] ?? 'Rascunho' ?></strong>
+                            <strong class="text-dark bg-light px-2 rounded"><?= ucfirst($post['status'] ?? 'Rascunho') ?></strong>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Visibilidade:</span>
-                            <strong>Público</strong>
+                            <strong class="text-dark">Público</strong>
                         </div>
                     </div>
 
-                    <div class="d-grid">
-                        <button type="submit" name="status" value="published" class="btn btn-primary">
-                            <?= $isEdit ? 'Atualizar Post' : 'Publicar' ?>
+                    <div class="d-flex flex-column gap-2">
+                        <button type="submit" name="status" value="published" class="btn btn-primary py-2 fw-bold shadow-sm">
+                            <?= $isEdit ? 'Atualizar Post' : '🚀 Publicar Agora' ?>
                         </button>
+                        
+                        <?php if($isEdit): ?>
+                        <div class="text-center mt-2">
+                            <a href="/admin/posts" class="text-danger small text-decoration-none">Mover para lixeira</a>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
