@@ -129,14 +129,9 @@ class MediaController extends DashboardController
         if (move_uploaded_file($file['tmp_name'], $destination)) {
             $log("Move uploaded file success");
             
-            // Processar Imagem (Resize + Conversão AVIF/WebP)
-            try {
-                $finalFilename = $this->processImage($destination, $filename);
-                $log("Processed filename: $finalFilename");
-            } catch (\Exception $e) {
-                $log("Process Image Exception: " . $e->getMessage());
-                $finalFilename = $filename; // Fallback
-            }
+            // TEMPORARY: Skip image processing to debug
+            $finalFilename = $filename;
+            $log("Skipping processImage for debug. Filename: $finalFilename");
             
             echo json_encode([
                 'success' => true,
@@ -144,8 +139,9 @@ class MediaController extends DashboardController
                 'filename' => basename($finalFilename),
             ]);
         } else {
-            $log("move_uploaded_file failed. Error: " . error_get_last()['message'] ?? 'Unknown');
-            echo json_encode(['success' => false, 'error' => 'Erro ao salvar arquivo']);
+            $errorInfo = error_get_last();
+            $log("move_uploaded_file failed. Error: " . ($errorInfo['message'] ?? 'Unknown'));
+            echo json_encode(['success' => false, 'error' => 'Erro ao salvar arquivo: ' . ($errorInfo['message'] ?? '')]);
         }
     }
     
