@@ -15,6 +15,8 @@ class Tag extends Model
         'slug',
     ];
 
+    public $timestamps = false; // Disable timestamps if column missing
+
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'post_tags');
