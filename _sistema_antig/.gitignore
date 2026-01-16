@@ -1,0 +1,38 @@
+# Dependências
+/vendor/
+/node_modules/
+
+# Ambiente (NUNCA commitar credenciais!)
+.env
+.env.local
+.env.production
+.env.*.local
+/backups/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/logs/
+
+# Cache
+/cache/
+*.cache
+
+# Uploads (em produção)
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# Storage
+/storage/cache/*
+/storage/logs/*
+/storage/newsletter*.txt
+!/storage/README.md
