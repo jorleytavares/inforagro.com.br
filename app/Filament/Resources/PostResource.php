@@ -91,17 +91,14 @@ class PostResource extends Resource
                             ->multiple()
                             ->searchable()
                             ->preload()
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->label('Nome')
-                                    ->required()
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                                Forms\Components\TextInput::make('slug')
-                                    ->label('Slug')
-                                    ->required()
-                                    ->unique('tags', 'slug', ignoreRecord: true),
-                            ]),
+                            ->createOptionUsing(function (string $data) {
+                                $slug = \Illuminate\Support\Str::slug($data);
+                                $tag = \App\Models\Tag::firstOrCreate(
+                                    ['slug' => $slug],
+                                    ['name' => $data]
+                                );
+                                return $tag->getKey();
+                            }),
                     ])
             ]);
     }
