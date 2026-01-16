@@ -1,0 +1,167 @@
+/* Brutalist Theme for Filament Admin */
+
+/* Global Reset for Brutalism */
+:root {
+    --font-family-mono: 'Courier New', Courier, monospace;
+    --color-gray-50: #ffffff;
+    --color-gray-100: #f3f4f6;
+    --color-gray-200: #e5e7eb;
+    --color-gray-800: #1f2937;
+    --color-gray-900: #000000;
+}
+
+body, .fi-body {
+    background-color: #f0f0f0 !important;
+    font-family: 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+/* Hard Borders & No Radius */
+.fi-main-ctnr,
+.fi-sidebar,
+.fi-header,
+.fi-topbar,
+.fi-card,
+.fi-section,
+.fi-fo-section,
+.fi-input,
+.fi-select-input,
+.fi-btn,
+.fi-dropdown-panel,
+.fi-modal-window,
+.fi-ta-content,
+.bg-white,
+.ring-1,
+input,
+select,
+button,
+div {
+    border-radius: 0 !important;
+}
+
+/* Cards & Containers - The "Brutalist Box" Look */
+.fi-card, .bg-white, .fi-section, .fi-fo-section {
+    border: 2px solid #000 !important;
+    box-shadow: 4px 4px 0px 0px #000 !important;
+    background-color: #fff !important;
+}
+
+/* Buttons - High Contrast */
+.fi-btn {
+    border: 2px solid #000 !important;
+    box-shadow: 2px 2px 0px 0px #000 !important;
+    text-transform: uppercase;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px;
+    transition: all 0.1s ease-in-out;
+}
+
+.fi-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px 0px #000 !important;
+}
+
+.fi-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0px 0px 0px 0px #000 !important;
+}
+
+/* Primary Button (usually colored) */
+.fi-btn-primary {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.fi-btn-primary:hover {
+    background-color: #333 !important;
+}
+
+/* Inputs */
+input, select, textarea, .fi-input, .fi-select-input {
+    border: 2px solid #000 !important;
+    background: #fff !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    font-family: var(--font-family-mono) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    background-color: #ffffcc !important; /* Subtle highlight */
+    outline: none !important;
+}
+
+/* Table - Grid Lines */
+.fi-ta-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.fi-ta-header-cell {
+    border-bottom: 2px solid #000 !important;
+    text-transform: uppercase;
+    font-weight: 900 !important;
+    letter-spacing: 1px;
+}
+
+.fi-ta-cell {
+    border-bottom: 1px solid #000 !important;
+    font-family: var(--font-family-mono);
+}
+
+/* Sidebar */
+.fi-sidebar {
+    border-right: 2px solid #000 !important;
+    background-color: #fff !important;
+}
+
+.fi-sidebar-item {
+    border-bottom: 1px solid #000 !important;
+    margin-bottom: 0 !important;
+}
+
+.fi-sidebar-item:hover, .fi-sidebar-item-active {
+    background-color: #000 !important;
+}
+
+.fi-sidebar-item:hover span, .fi-sidebar-item-active span {
+    color: #fff !important;
+}
+
+.fi-sidebar-item:hover svg, .fi-sidebar-item-active svg {
+    color: #fff !important;
+}
+
+/* Header/Topbar */
+.fi-topbar {
+    border-bottom: 2px solid #000 !important;
+    background-color: #fff !important;
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, h5, h6, .text-xl, .text-lg, .text-2xl, .fi-header-heading {
+    color: #000 !important;
+    font-weight: 900 !important;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+/* Badges/Tags */
+.fi-badge {
+    border: 1px solid #000 !important;
+    background-color: #fff !important;
+    color: #000 !important;
+    font-family: var(--font-family-mono);
+    font-weight: bold;
+}
+
+/* Notifications */
+.fi-no-notification {
+    border: 2px solid #000 !important;
+    box-shadow: 6px 6px 0px 0px #000 !important;
+}
+
+/* Mobile & Responsive tweaks */
+@media (max-width: 768px) {
+    .fi-main-ctnr {
+        padding: 10px !important;
+    }
+}
