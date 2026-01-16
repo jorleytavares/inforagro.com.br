@@ -72,6 +72,7 @@
              style="position: relative; border: 1px solid var(--admin-border); border-radius: 8px; overflow: hidden;">
             
             <form method="POST" action="/admin/media/delete" style="position: absolute; top: 5px; right: 5px; z-index: 10;" onsubmit="return confirm('Excluir este arquivo permanentemente?')">
+                <input type="hidden" name="_csrf" value="<?= $csrfToken ?? '' ?>">
                 <input type="hidden" name="filename" value="<?= htmlspecialchars($file['path']) ?>">
                 <button type="submit" class="btn btn-danger btn-sm" title="Excluir" style="padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">&times;</button>
             </form>
@@ -112,6 +113,7 @@
             <button type="button" class="btn btn-primary" onclick="selectAndClose()">Usar Imagem</button>
             <?php endif; ?>
             <form method="POST" action="/admin/media/delete" style="display: inline;">
+                <input type="hidden" name="_csrf" value="<?= $csrfToken ?? '' ?>">
                 <input type="hidden" name="filename" id="modal-filename">
                 <button type="submit" class="btn btn-danger" onclick="return confirm('Excluir esta imagem?')">Excluir</button>
             </form>
