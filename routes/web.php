@@ -26,24 +26,6 @@ Route::controller(\App\Http\Controllers\PageController::class)->group(function (
 
 
 
-// Utility to clean slugs (Run once then remove)
-Route::get('/fix-slugs', function () {
-    // Run Migration for users table manually if needed
-    if (!\Illuminate\Support\Facades\Schema::hasColumn('users', 'slug')) {
-         \Illuminate\Support\Facades\Schema::table('users', function (\Illuminate\Database\Schema\Blueprint $table) {
-            $table->string('slug')->unique()->nullable()->after('name');
-            $table->text('bio')->nullable()->after('role');
-            $table->string('avatar')->nullable()->after('bio');
-            $table->json('social_links')->nullable()->after('avatar');
-        });
-    }
-
-    foreach (\App\Models\User::whereNull('slug')->orWhere('slug', '')->get() as $user) {
-        $user->slug = \Illuminate\Support\Str::slug($user->name) . '-' . $user->id;
-        $user->save();
-    }
-    return 'User Slugs Generated and Schema Updated!';
-});
 
 // Newsletter
 Route::post('/newsletter', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
