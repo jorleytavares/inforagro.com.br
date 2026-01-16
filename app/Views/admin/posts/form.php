@@ -209,24 +209,35 @@
     </div>
 </form>
 
-<!-- TinyMCE CDN -->
+<!-- TinyMCE CDN (Official with no-api-key fallback or CDNJS) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
+
 <script>
-// Inicializar TinyMCE quando o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', function() {
+// Função para carregar o editor com retentativas
+function loadTinyMCE() {
+    if (typeof tinymce === 'undefined') {
+        // Se a biblioteca ainda não carregou, tenta novamente em 100ms
+        setTimeout(loadTinyMCE, 100);
+        return;
+    }
+
+    // Configuração Profissional
     tinymce.init({
-        selector: '.tinymce-editor', // Garante que seleciona pela classe correta
-        height: 600,
+        selector: '.tinymce-editor',
+        height: 650,
         menubar: true,
         statusbar: true,
         language: 'pt_BR',
-        skin: 'oxide', // Skin padrão claro e profissional
+        browser_spellcheck: true,
+        contextmenu: false,
+        
         plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
             'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample',
             'emoticons', 'directionality', 'nonbreaking', 'pagebreak', 'visualchars'
         ],
+        
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | fullscreen code',
         
         font_family_formats: 'Inter=Inter,sans-serif;Arial=arial,helvetica,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Times New Roman=times new roman,times;Verdana=verdana,geneva',
@@ -237,27 +248,42 @@ document.addEventListener('DOMContentLoaded', function() {
             h1,h2,h3,h4,h5,h6 { font-weight: 600; margin-top: 1.5em; margin-bottom: 0.5em; }
             p { margin-bottom: 1em; }
             img { max-width: 100%; height: auto; border-radius: 4px; }
+            .mce-content-body { padding-bottom: 50px !important; }
         `,
         
+        // Upload
         images_upload_url: '/admin/media/tinymce-upload?token=<?= $tinymceToken ?? "" ?>',
         automatic_uploads: true,
         file_picker_types: 'image media',
         image_title: true,
         image_caption: true,
         
+        // Callback para Media Picker customizado
         file_picker_callback: function (cb, value, meta) {
             window.tinyMceCallback = cb;
             window.open('/admin/media?picker=1&type=' + meta.filetype, 'media-picker', 'width=900,height=600');
+        },
+
+        setup: function(editor) {
+            editor.on('init', function() {
+                console.log('TinyMCE Initialized successfully');
+                document.querySelector('.tinymce-editor').style.visibility = 'visible';
+            });
         }
     });
 
+    // Helper Global
     window.selectMediaForTiny = function(url) {
         if (window.tinyMceCallback) {
             window.tinyMceCallback(url);
             window.tinyMceCallback = null;
         }
     }
-});
+}
+
+// Iniciar tentativa de carregamento
+loadTinyMCE();
+</script>
 
 // Auto-gerar slug a partir do título
 document.getElementById('title').addEventListener('blur', function() {
