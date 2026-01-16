@@ -27,21 +27,35 @@
                     <!-- Slug (Hidden) -->
                     <input type="hidden" id="slug" name="slug" value="<?= htmlspecialchars($post['slug'] ?? '') ?>">
 
-                    <!-- Conteúdo (TinyMCE) -->
+                    <!-- Conteúdo (Quill Editor) -->
                     <div class="form-group">
-                        <textarea id="content" name="content" class="form-control tinymce-editor"><?= htmlspecialchars($post['content'] ?? '') ?></textarea>
+                        <div id="editor-container" style="height: 600px; font-family: 'Inter', sans-serif; font-size: 16px; background: white;">
+                            <?= $post['content'] ?? '' ?>
+                        </div>
+                        <input type="hidden" name="content" id="content">
                     </div>
                 </div>
             </div>
 
-            <!-- SEO -->
+            <!-- Resumo -->
             <div class="card mb-3">
                 <div class="card-header bg-light">
-                    <h3 class="card-title h6 mb-0">Otimização para Motores de Busca (SEO)</h3>
+                    <h3 class="card-title h6 mb-0">Resumo</h3>
+                </div>
+                <div class="card-body" style="padding: 1rem;">
+                    <textarea id="excerpt" name="excerpt" class="form-control" rows="3" 
+                              placeholder="Breve descrição do artigo para listagens e SEO"><?= htmlspecialchars($post['excerpt'] ?? '') ?></textarea>
+                    <small class="text-muted">Opcional. Se vazio, será gerado automaticamente do conteúdo.</small>
+                </div>
+            </div>
+            
+            <!-- Schema Markup -->
+            <div class="card mb-3">
+                <div class="card-header bg-light">
+                    <h3 class="card-title h6 mb-0">Schema Markup (JSON-LD)</h3>
                 </div>
                 <div class="card-body" style="padding: 1rem;">
                     <div class="form-group">
-                        <label class="form-label" for="custom_schema">Schema Markup Personalizado (JSON-LD)</label>
                         <textarea id="custom_schema" name="custom_schema" class="form-control" rows="8" 
                                   style="font-family: monospace; font-size: 0.9rem; background: #282c34; color: #abb2bf;"
                                   placeholder='<script type="application/ld+json">
@@ -51,7 +65,7 @@
   ...
 }
 </script>'><?= htmlspecialchars($post['custom_schema'] ?? '') ?></textarea>
-                        <small class="text-muted d-block mt-2">Insira o código JSON-LD completo, incluindo as tags &lt;script&gt;.</small>
+                        <small class="text-muted d-block mt-2">Insira o código JSON-LD completo.</small>
                     </div>
                 </div>
             </div>
@@ -76,6 +90,7 @@
                         </select>
                     </div>
 
+                    <!-- Author and other fields remain... -->
                     <div class="form-group mb-3">
                         <label class="form-label mb-1">Autor:</label>
                         <select id="author_id" name="author_id" class="form-control form-select-sm" required>
@@ -98,7 +113,7 @@
                 </div>
             </div>
 
-            <!-- Painel Formato / Categoria -->
+            <!-- Categories Block -->
             <div class="card mb-3">
                 <div class="card-header bg-light">
                     <h3 class="card-title h6 mb-0">Categorias</h3>
@@ -130,7 +145,7 @@
                 </div>
             </div>
 
-            <!-- Painel Tags -->
+            <!-- Tags Block -->
             <div class="card mb-3">
                 <div class="card-header bg-light">
                     <h3 class="card-title h6 mb-0">Tags</h3>
@@ -170,7 +185,7 @@
                 </div>
             </div>
 
-            <!-- Painel Imagem Destacada -->
+            <!-- Featured Image Block -->
             <div class="card mb-3">
                 <div class="card-header bg-light">
                     <h3 class="card-title h6 mb-0">Imagem Destacada</h3>
@@ -209,80 +224,37 @@
     </div>
 </form>
 
-<!-- TinyMCE CDN (Official with no-api-key fallback or CDNJS) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- Quill Editor CDN -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
 <script>
-// Função para carregar o editor com retentativas
-function loadTinyMCE() {
-    if (typeof tinymce === 'undefined') {
-        // Se a biblioteca ainda não carregou, tenta novamente em 100ms
-        setTimeout(loadTinyMCE, 100);
-        return;
+// Initialize Quill Editor
+var quill = new Quill('#editor-container', {
+    theme: 'snow',
+    placeholder: 'Escreva seu artigo incr\u00EDvel aqui...',
+    modules: {
+        toolbar: [
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'align': [] }],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['link', 'image', 'video', 'blockquote', 'code-block'],
+            ['clean']
+        ]
     }
+});
 
-    // Configuração Profissional
-    tinymce.init({
-        selector: '.tinymce-editor',
-        height: 650,
-        menubar: true,
-        statusbar: true,
-        language: 'pt_BR',
-        browser_spellcheck: true,
-        contextmenu: false,
-        
-        plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample',
-            'emoticons', 'directionality', 'nonbreaking', 'pagebreak', 'visualchars'
-        ],
-        
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | fullscreen code',
-        
-        font_family_formats: 'Inter=Inter,sans-serif;Arial=arial,helvetica,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Times New Roman=times new roman,times;Verdana=verdana,geneva',
-        
-        content_style: `
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-            body { font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.7; color: #333; max-width: 850px; margin: 0 auto; padding: 20px; }
-            h1,h2,h3,h4,h5,h6 { font-weight: 600; margin-top: 1.5em; margin-bottom: 0.5em; }
-            p { margin-bottom: 1em; }
-            img { max-width: 100%; height: auto; border-radius: 4px; }
-            .mce-content-body { padding-bottom: 50px !important; }
-        `,
-        
-        // Upload
-        images_upload_url: '/admin/media/tinymce-upload?token=<?= $tinymceToken ?? "" ?>',
-        automatic_uploads: true,
-        file_picker_types: 'image media',
-        image_title: true,
-        image_caption: true,
-        
-        // Callback para Media Picker customizado
-        file_picker_callback: function (cb, value, meta) {
-            window.tinyMceCallback = cb;
-            window.open('/admin/media?picker=1&type=' + meta.filetype, 'media-picker', 'width=900,height=600');
-        },
+// Sync Quill content to hidden input form submit
+var form = document.querySelector('form');
+form.onsubmit = function() {
+    var content = document.querySelector('input[name=content]');
+    content.value = quill.root.innerHTML;
+};
 
-        setup: function(editor) {
-            editor.on('init', function() {
-                console.log('TinyMCE Initialized successfully');
-                document.querySelector('.tinymce-editor').style.visibility = 'visible';
-            });
-        }
-    });
-
-    // Helper Global
-    window.selectMediaForTiny = function(url) {
-        if (window.tinyMceCallback) {
-            window.tinyMceCallback(url);
-            window.tinyMceCallback = null;
-        }
-    }
-}
-
-// Iniciar tentativa de carregamento
-loadTinyMCE();
+// Auto-fill hidden input on load if editing
+document.querySelector('input[name=content]').value = quill.root.innerHTML;
 // Auto-gerar slug a partir do título
 document.getElementById('title').addEventListener('blur', function() {
     const slugField = document.getElementById('slug');
