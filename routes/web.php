@@ -26,6 +26,15 @@ Route::controller(\App\Http\Controllers\PageController::class)->group(function (
 
 
 
+// Utility to clean slugs (Run once then remove)
+Route::get('/fix-slugs', function () {
+    foreach (\App\Models\User::whereNull('slug')->orWhere('slug', '')->get() as $user) {
+        $user->slug = \Illuminate\Support\Str::slug($user->name) . '-' . $user->id;
+        $user->save();
+    }
+    return 'User Slugs Generated!';
+});
+
 // Newsletter
 Route::post('/newsletter', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
