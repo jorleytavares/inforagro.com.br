@@ -21,6 +21,24 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
+     * Disable Remember Token (Legacy DB compatibility)
+     */
+    public function getRememberToken()
+    {
+        return null;
+    }
+
+    public function setRememberToken($value)
+    {
+        // Do nothing
+    }
+
+    public function getRememberTokenName()
+    {
+        return ''; // Return empty to prevent usage
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
