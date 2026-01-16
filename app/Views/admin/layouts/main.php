@@ -1,3 +1,4 @@
+<?php $isPickerMode = isset($_GET['picker']); ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -337,10 +338,10 @@
         .picker-mode .admin-main { margin-left: 0; }
     </style>
 </head>
-<body class="<?= !empty($isPicker) ? 'picker-mode' : '' ?>">
+<body class="<?= $isPickerMode ? 'picker-mode' : '' ?>">
     <div class="admin-layout">
         <!-- Sidebar -->
-        <?php if(empty($isPicker)): ?>
+        <?php if(!$isPickerMode): ?>
         <aside class="admin-sidebar">
             <div class="sidebar-header">
                 <a href="/admin" class="sidebar-logo">
@@ -415,7 +416,7 @@
         
         <!-- Main Content -->
         <main class="admin-main">
-            <?php if(empty($isPicker)): ?>
+            <?php if(!$isPickerMode): ?>
             <header class="admin-header">
                 <h1 class="header-title"><?= $pageTitle ?? 'Dashboard' ?></h1>
                 <div class="header-user">
