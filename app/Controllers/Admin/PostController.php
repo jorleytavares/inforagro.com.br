@@ -207,7 +207,7 @@ class PostController extends DashboardController
             'title' => $title,
             'subtitle' => $_POST['subtitle'] ?? '',
             'slug' => $slug,
-            'excerpt' => $_POST['excerpt'] ?? '',
+            'excerpt' => $this->generateExcerpt($_POST['content'] ?? ''),
             'content' => $_POST['content'] ?? '',
             'category_id' => (int) ($_POST['category_id'] ?? 1),
             'author_id' => (int) ($_POST['author_id'] ?? 1),
@@ -218,6 +218,7 @@ class PostController extends DashboardController
             'focus_keyword' => $_POST['focus_keyword'] ?? '',
             'featured_image' => $_POST['featured_image'] ?? '',
             'featured_image_caption' => $_POST['featured_image_caption'] ?? '',
+            'custom_schema' => $_POST['custom_schema'] ?? '',
             'read_time' => $this->calculateReadTime($_POST['content'] ?? ''),
             'word_count' => str_word_count(strip_tags($_POST['content'] ?? '')),
             'published_at' => $_POST['status'] === 'published' ? date('Y-m-d H:i:s') : null,
@@ -288,5 +289,28 @@ class PostController extends DashboardController
                 Database::query("INSERT INTO post_tags (post_id, tag_id) VALUES (?, ?)", [$postId, $tagId]);
             } catch (\Exception $e) {}
         }
+    }
+
+    /**
+     * Gerar resumo automático a partir do conteúdo
+     */
+    private function generateExcerpt(string $content, int $length = 160): string
+    {
+        $text = strip_tags($content);
+        // Limpar espaços extras
+        $text = trim(preg_replace('/\s+/', ' ', $text));
+        
+        if (mb_strlen($text) <= $length) {
+            return $text;
+        }
+        
+        $excerpt = mb_substr($text, 0, $length);
+        // Cortar no último espaço para não quebrar palavras
+        $lastSpace = mb_strrpos($excerpt, ' ');
+        if ($lastSpace !== false) {
+            $excerpt = mb_substr($excerpt, 0, $lastSpace);
+        }
+        
+        return $excerpt . '...';
     }
 }

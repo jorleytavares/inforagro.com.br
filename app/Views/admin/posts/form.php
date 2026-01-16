@@ -43,44 +43,24 @@
                 </div>
             </div>
 
-            <!-- Resumo -->
-            <div class="card mb-3">
-                <div class="card-header bg-light">
-                    <h3 class="card-title h6 mb-0">Resumo</h3>
-                </div>
-                <div class="card-body" style="padding: 1rem;">
-                    <textarea id="excerpt" name="excerpt" class="form-control" rows="3" 
-                              placeholder="Breve descrição do artigo para listagens e SEO"><?= htmlspecialchars($post['excerpt'] ?? '') ?></textarea>
-                    <small class="text-muted">Opcional. Se vazio, será gerado automaticamente do conteúdo.</small>
-                </div>
-            </div>
-            
             <!-- SEO -->
             <div class="card mb-3">
                 <div class="card-header bg-light">
                     <h3 class="card-title h6 mb-0">Otimização para Motores de Busca (SEO)</h3>
                 </div>
                 <div class="card-body" style="padding: 1rem;">
-                    <!-- Schema Markup (JSON-LD) is actively generated in PostController::generateArticleSchema -->
-                    <div class="row">
-                        <div class="col-md-6 form-group mb-3">
-                            <label class="form-label" for="meta_title">Meta Title</label>
-                            <input type="text" id="meta_title" name="meta_title" class="form-control" 
-                                   value="<?= htmlspecialchars($post['meta_title'] ?? '') ?>" maxlength="60">
-                            <small class="text-muted d-block text-end"><span id="meta-title-count">0</span>/60</small>
-                        </div>
-                        <div class="col-md-6 form-group mb-3">
-                            <label class="form-label" for="focus_keyword">Palavra-chave Foco</label>
-                            <input type="text" id="focus_keyword" name="focus_keyword" class="form-control" 
-                                   value="<?= htmlspecialchars($post['focus_keyword'] ?? '') ?>">
-                        </div>
-                    </div>
-                    
                     <div class="form-group">
-                        <label class="form-label" for="meta_description">Meta Description</label>
-                        <textarea id="meta_description" name="meta_description" class="form-control" rows="2" 
-                                  maxlength="160"><?= htmlspecialchars($post['meta_description'] ?? '') ?></textarea>
-                        <small class="text-muted d-block text-end"><span id="meta-desc-count">0</span>/160</small>
+                        <label class="form-label" for="custom_schema">Schema Markup Personalizado (JSON-LD)</label>
+                        <textarea id="custom_schema" name="custom_schema" class="form-control" rows="8" 
+                                  style="font-family: monospace; font-size: 0.9rem; background: #282c34; color: #abb2bf;"
+                                  placeholder='<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  ...
+}
+</script>'><?= htmlspecialchars($post['custom_schema'] ?? '') ?></textarea>
+                        <small class="text-muted d-block mt-2">Insira o código JSON-LD completo, incluindo as tags &lt;script&gt;.</small>
                     </div>
                 </div>
             </div>

@@ -66,6 +66,11 @@ class PostController extends Controller
         // Schema JSON-LD para artigo
         $articleSchema = $this->generateArticleSchema($post);
         
+        // Append Manual Schema if present
+        if (!empty($post['custom_schema'])) {
+            $articleSchema .= "\n" . $post['custom_schema'];
+        }
+        
         $this->view('post.show', [
             'pageTitle' => ($post['meta_title'] ?? $post['title']) . ' | InforAgro',
             'pageDescription' => $post['meta_description'] ?? $post['excerpt'] ?? '',
