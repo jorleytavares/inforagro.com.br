@@ -29,9 +29,45 @@
 
                     <!-- Conteúdo (Quill Editor) -->
                     <div class="form-group">
-                        <div id="editor-container" style="height: 600px; font-family: 'Inter', sans-serif; font-size: 16px; background: white;">
-                            <?= $post['content'] ?? '' ?>
+                        <label class="form-label" style="font-weight: 600;">Conteúdo</label>
+                        <!-- Container para o Toolbar (para garantir visibilidade) -->
+                        <div id="toolbar-container">
+                            <span class="ql-formats">
+                                <select class="ql-header"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                                <select class="ql-background"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                <button class="ql-align" value=""></button>
+                                <button class="ql-align" value="center"></button>
+                                <button class="ql-align" value="right"></button>
+                                <button class="ql-align" value="justify"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                                <button class="ql-image"></button>
+                                <button class="ql-video"></button>
+                                <button class="ql-blockquote"></button>
+                                <button class="ql-code-block"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-clean"></button>
+                            </span>
                         </div>
+                        
+                        <!-- Editor Container -->
+                        <div id="editor-container" style="height: 600px; font-family: 'Inter', sans-serif; font-size: 16px; background: white; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;"></div>
+                        
                         <input type="hidden" name="content" id="content">
                     </div>
                 </div>
@@ -228,25 +264,21 @@ document.addEventListener('DOMContentLoaded', function() {
         theme: 'snow',
         placeholder: 'Escreva seu artigo aqui...',
         modules: {
-            toolbar: [
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'align': [] }],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['link', 'image', 'video', 'blockquote', 'code-block'],
-                ['clean']
-            ]
+            toolbar: '#toolbar-container'
         }
     });
 
-    // Sincronizar (e preencher inicialmente) o input hidden
-    var contentInput = document.querySelector('input[name=content]');
-    if (contentInput && contentInput.value) {
-        // Se já tem valor (edição ou erro de validação), joga pro Quill
-        // Mas atenção: se inicializou vazio, o Quill já está vazio.
-        // Se o PHP renderizou o conteúdo dentro da DIV, o Quill pega automaticamente.
+    // LOAD INITIAL CONTENT SAFELY
+    try {
+        var initialContent = <?= json_encode($post['content'] ?? '') ?>;
+        if (initialContent) {
+            quill.root.innerHTML = initialContent;
+        }
+    } catch (e) {
+        console.error('Erro ao carregar conteúdo:', e);
     }
+
+
     
     // Ao enviar form, atualiza o input
     var form = document.querySelector('form');
