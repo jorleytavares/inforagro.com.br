@@ -14,7 +14,7 @@ Disallow: /*.log$
 Disallow: /*.env$
 
 # Sitemap
-Sitemap: https://inforagro.com.br/sitemap.xml
+Sitemap: https://www.inforagro.com.br/sitemap.xml
 
 # Crawl-delay para ser gentil com o servidor
 Crawl-delay: 1
