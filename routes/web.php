@@ -23,11 +23,6 @@ Route::controller(\App\Http\Controllers\PageController::class)->group(function (
     Route::get('/termos-de-uso', 'terms')->name('page.terms');
 });
 
-// Utility to fix storage link (Run once then remove)
-Route::get('/fix-storage', function () {
-    \Illuminate\Support\Facades\Artisan::call('storage:link');
-    return 'Storage Linked!';
-});
 
 // Newsletter
 Route::post('/newsletter', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
