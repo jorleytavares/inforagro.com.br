@@ -193,8 +193,8 @@
          <div class="card glass-panel mt-4" style="background: linear-gradient(135deg, #5F7D4E, #3E5232); color: white; border: none;">
             <div class="card-body" style="padding: 1.5rem; text-align: center;">
                 <h3 style="color: white; margin-bottom: 0.5rem; font-size: 1.25rem;">Precisa de Ajuda?</h3>
-                <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);">Consulte a documentação ou contate o suporte.</p>
-                <a href="#" style="display: inline-block; background: #ffffff; color: #5F7D4E; border: none; font-weight: 700; padding: 0.6rem 1.2rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Ver Documentação</a>
+                <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);">Dúvidas sobre o sistema? Fale com o desenvolvedor.</p>
+                <a href="mailto:tavaresjorley@gmail.com" style="display: inline-block; background: #ffffff; color: #5F7D4E; border: none; font-weight: 700; padding: 0.6rem 1.2rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Contatar Suporte</a>
             </div>
         </div>
 
