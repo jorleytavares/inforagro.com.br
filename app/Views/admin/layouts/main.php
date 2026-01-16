@@ -341,7 +341,6 @@
 <body class="<?= $isPickerMode ? 'picker-mode' : '' ?>">
     <div class="admin-layout">
         <!-- Sidebar -->
-        <?php if(!$isPickerMode): ?>
         <aside class="admin-sidebar">
             <div class="sidebar-header">
                 <a href="/admin" class="sidebar-logo">
@@ -412,11 +411,9 @@
                 </a>
             </nav>
         </aside>
-        <?php endif; ?>
         
         <!-- Main Content -->
         <main class="admin-main">
-            <?php if(!$isPickerMode): ?>
             <header class="admin-header">
                 <h1 class="header-title"><?= $pageTitle ?? 'Dashboard' ?></h1>
                 <div class="header-user">
@@ -424,7 +421,6 @@
                     <a href="/admin/logout" class="btn-logout">Sair</a>
                 </div>
             </header>
-            <?php endif; ?>
             
             <div class="admin-content">
                 <?= $content ?>
