@@ -51,6 +51,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th style="width: 60px;">Img</th>
                 <th>Título</th>
                 <th>Categoria</th>
                 <th>Autor</th>
@@ -63,6 +64,13 @@
         <tbody>
             <?php foreach ($posts as $post): ?>
             <tr>
+                <td>
+                    <?php if (!empty($post['featured_image'])): ?>
+                        <img src="<?= htmlspecialchars($post['featured_image']) ?>" style="width: 50px; height: 36px; object-fit: cover; border-radius: 4px;" loading="lazy">
+                    <?php else: ?>
+                        <div style="width: 50px; height: 36px; background: #e2e8f0; border-radius: 4px;"></div>
+                    <?php endif; ?>
+                </td>
                 <td>
                     <strong><?= htmlspecialchars(mb_substr($post['title'], 0, 50)) ?><?= mb_strlen($post['title']) > 50 ? '...' : '' ?></strong>
                 </td>
@@ -82,6 +90,7 @@
                 <td>
                     <a href="/admin/posts/<?= $post['id'] ?>/edit" class="btn btn-secondary btn-sm">Editar</a>
                     <form action="/admin/posts/<?= $post['id'] ?>/delete" method="POST" style="display:inline" onsubmit="return confirm('Excluir este post?')">
+                        <?= $csrfField ?? '<input type="hidden" name="_csrf" value="'.($_SESSION['csrf_token'] ?? '').'">' ?>
                         <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
                     </form>
                 </td>
