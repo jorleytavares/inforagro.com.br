@@ -283,8 +283,6 @@ function loadTinyMCE() {
 
 // Iniciar tentativa de carregamento
 loadTinyMCE();
-</script>
-
 // Auto-gerar slug a partir do título
 document.getElementById('title').addEventListener('blur', function() {
     const slugField = document.getElementById('slug');
@@ -294,19 +292,6 @@ document.getElementById('title').addEventListener('blur', function() {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-|-$/g, '');
         slugField.value = slug;
-    }
-});
-
-// Contadores SEO
-const updateCount = (id, targetId) => {
-    const el = document.getElementById(id);
-    if(el) document.getElementById(targetId).textContent = el.value.length;
-};
-['meta_title', 'meta_description'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) {
-        el.addEventListener('input', () => updateCount(id, id === 'meta_title' ? 'meta-title-count' : 'meta-desc-count'));
-        updateCount(id, id === 'meta_title' ? 'meta-title-count' : 'meta-desc-count');
     }
 });
 
@@ -369,12 +354,14 @@ window.removeTag = function(index) {
     renderTags();
 }
 
-tagsInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' || e.key === ',') {
-        e.preventDefault();
-        addTag(this.value);
-    }
-});
+if(tagsInput) {
+    tagsInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            addTag(this.value);
+        }
+    });
+}
 
 renderTags();
 </script>
