@@ -67,6 +67,11 @@ class PostResource extends Resource
                             ->directory('uploads')
                             ->columnSpanFull(),
 
+                        Forms\Components\TextInput::make('featured_image_caption')
+                            ->label('Legenda da Imagem')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([
@@ -84,12 +89,18 @@ class PostResource extends Resource
                             ->label('Tags')
                             ->relationship('tags', 'name')
                             ->multiple()
+                            ->searchable()
                             ->preload()
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
-                                    ->required(),
+                                    ->label('Nome')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
                                 Forms\Components\TextInput::make('slug')
-                                    ->required(),
+                                    ->label('Slug')
+                                    ->required()
+                                    ->unique('tags', 'slug', ignoreRecord: true),
                             ]),
                     ])
             ]);
