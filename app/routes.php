@@ -69,6 +69,7 @@ $router->post('/admin/media/delete', 'Admin\MediaController', 'delete');
 $router->get('/admin/settings', 'Admin\SettingsController', 'index');
 $router->post('/admin/settings/update', 'Admin\SettingsController', 'update');
 $router->get('/admin/settings/clear-cache', 'Admin\SettingsController', 'clearCache');
+$router->get('/admin/settings/purge-cloudflare', 'Admin\SettingsController', 'purgeCloudflare');
 
 // Admin - Usuários
 $router->get('/admin/users', 'Admin\UserController', 'index');

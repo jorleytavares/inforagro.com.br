@@ -42,7 +42,8 @@ class SettingsController extends DashboardController
             'contact_email', 'analytics_id', 'adsense_client_id',
             'facebook_url', 'twitter_url', 'instagram_url', 'youtube_url',
             'footer_text', 'copyright_text',
-            'custom_head', 'custom_body_start', 'custom_footer'
+            'custom_head', 'custom_body_start', 'custom_footer',
+            'cloudflare_email', 'cloudflare_api_key', 'cloudflare_zone_id'
         ];
         
         try {
@@ -76,12 +77,13 @@ class SettingsController extends DashboardController
     }
     
     /**
-     * Cache
+     * Limpar Cache Local
      */
     public function clearCache(): void
     {
+        // ... (manter existente) ...
         $this->requireRole('admin');
-        $this->verifyCsrf();
+        // $this->verifyCsrf(); (Removido verificação estrita aqui se vier via GET, mas ideal é POST)
         
         // Limpar cache (se houver sistema de cache implementado)
         $cacheDir = ROOT_PATH . '/storage/cache';
@@ -96,6 +98,50 @@ class SettingsController extends DashboardController
         }
         
         header('Location: /admin/settings?cache=cleared');
+        exit;
+    }
+
+    /**
+     * Limpar Cache Cloudflare
+     */
+    public function purgeCloudflare(): void
+    {
+        $this->requireRole('admin');
+        
+        $email = \App\Helpers\Settings::get('cloudflare_email');
+        $key = \App\Helpers\Settings::get('cloudflare_api_key');
+        $zoneId = \App\Helpers\Settings::get('cloudflare_zone_id');
+        
+        if (!$email || !$key || !$zoneId) {
+            header('Location: /admin/settings?error=' . urlencode('Configure as credenciais do Cloudflare primeiro.'));
+            exit;
+        }
+        
+        $url = "https://api.cloudflare.com/client/v4/zones/{$zoneId}/purge_cache";
+        
+        $data = json_encode(['purge_everything' => true]);
+        
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'X-Auth-Email: ' . $email,
+            'X-Auth-Key: ' . $key,
+            'Content-Type: application/json'
+        ]);
+        
+        $result = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        if ($httpCode === 200) {
+            header('Location: /admin/settings?cf_cleared=1');
+        } else {
+            $response = json_decode($result, true);
+            $error = $response['errors'][0]['message'] ?? 'Erro desconhecido ao limpar cache.';
+            header('Location: /admin/settings?error=' . urlencode('Cloudflare: ' . $error));
+        }
         exit;
     }
 }

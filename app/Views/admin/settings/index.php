@@ -5,6 +5,9 @@
 <?php if (!empty($_GET['cache'])): ?>
 <div class="alert alert-success">Cache limpo com sucesso!</div>
 <?php endif; ?>
+<?php if (!empty($_GET['cf_cleared'])): ?>
+<div class="alert alert-success">Cache do Cloudflare limpo com sucesso! ☁️</div>
+<?php endif; ?>
 
 <form action="/admin/settings/update" method="POST">
     <?= $csrfField ?? '' ?>
@@ -60,6 +63,44 @@
                            value="<?= htmlspecialchars($settings['adsense_client_id'] ?? '') ?>" 
                            placeholder="ca-pub-XXXXXXXXXXXXXXXX">
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 class="card-title">Cloudflare (CDN)</h2>
+            <?php if (!empty($settings['cloudflare_zone_id'])): ?>
+            <a href="/admin/settings/purge-cloudflare" class="btn btn-secondary btn-sm" onclick="return confirm('Isso limpará todo o cache da CDN imediatamente. Continuar?')">
+                🧹 Purge Cache
+            </a>
+            <?php endif; ?>
+        </div>
+        
+        <div style="padding: 1.5rem;">
+            <div class="alert alert-info" style="margin-bottom: 1rem; font-size: 0.85rem; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd;">
+                Preencha os dados abaixo para habilitar a limpeza de cache automática e manual do Cloudflare.
+            </div>
+            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label class="form-label">E-mail da Conta</label>
+                    <input type="email" name="cloudflare_email" class="form-control" 
+                           value="<?= htmlspecialchars($settings['cloudflare_email'] ?? '') ?>" 
+                           placeholder="Ex: seu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Global API Key</label>
+                    <input type="password" name="cloudflare_api_key" class="form-control" 
+                           value="<?= htmlspecialchars($settings['cloudflare_api_key'] ?? '') ?>" 
+                           placeholder="Chave Global da API (não compartilhe)">
+                </div>
+            </div>
+             <div class="form-group">
+                <label class="form-label">Zone ID (ID da Zona)</label>
+                <input type="text" name="cloudflare_zone_id" class="form-control" 
+                       value="<?= htmlspecialchars($settings['cloudflare_zone_id'] ?? '') ?>" 
+                       placeholder="Ex: 907c471881cafe7b09f50f8636620c27">
             </div>
         </div>
     </div>
