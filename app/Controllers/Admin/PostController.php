@@ -7,7 +7,7 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Author;
-use App\Helpers\JwtHelper;
+
 use App\Helpers\AuditLog;
 
 /**
@@ -92,7 +92,7 @@ class PostController extends DashboardController
             'categories' => $categories,
             'authors' => $authors,
             'isEdit' => false,
-            'tinymceToken' => JwtHelper::generateToken(['name' => $_SESSION['admin_name'] ?? 'Admin']),
+
             'allTags' => array_column($allTags ?? [], 'name'),
         ]);
     }
@@ -148,7 +148,7 @@ class PostController extends DashboardController
             'categories' => $categories,
             'authors' => $authors,
             'isEdit' => true,
-            'tinymceToken' => JwtHelper::generateToken(['name' => $_SESSION['admin_name'] ?? 'Admin']),
+
             'allTags' => array_column($allTags ?? [], 'name'),
             'currentTags' => array_column($postTags ?? [], 'name'),
         ]);

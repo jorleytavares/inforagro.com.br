@@ -62,7 +62,7 @@ $router->post('/admin/tags/{id}/delete', 'Admin\TagController', 'destroy');
 // Admin - Mídia
 $router->get('/admin/media', 'Admin\MediaController', 'index');
 $router->post('/admin/media/upload', 'Admin\MediaController', 'upload');
-$router->post('/admin/media/tinymce-upload', 'Admin\MediaController', 'tinymceUpload');
+
 $router->post('/admin/media/delete', 'Admin\MediaController', 'delete');
 
 // Admin - Configurações

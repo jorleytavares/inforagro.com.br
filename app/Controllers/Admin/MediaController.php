@@ -121,48 +121,7 @@ class MediaController extends DashboardController
         }
     }
     
-    /**
-     * Upload via TinyMCE
-     */
-    public function tinymceUpload(): void
-    {
-        header('Content-Type: application/json');
-        
-        // TinyMCE envia JWT no header Authorization
-        // Verificar se usuário está logado
-        if (!isset($_SESSION['admin_logged_in'])) {
-            echo json_encode(['error' => ['message' => 'Não autorizado']]);
-            return;
-        }
-        
-        if (!isset($_FILES['file'])) {
-            echo json_encode(['error' => ['message' => 'Nenhum arquivo enviado']]);
-            return;
-        }
-        
-        $file = $_FILES['file'];
-        
-        if (!in_array($file['type'], $this->allowedTypes)) {
-            echo json_encode(['error' => ['message' => 'Tipo não permitido']]);
-            return;
-        }
-        
-        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $filename = date('Y-m') . '/' . uniqid() . '.' . $extension;
-        
-        $uploadDir = ROOT_PATH . '/public/uploads/' . date('Y-m');
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        
-        $destination = ROOT_PATH . '/public/uploads/' . $filename;
-        
-        if (move_uploaded_file($file['tmp_name'], $destination)) {
-            echo json_encode(['location' => '/uploads/' . $filename]);
-        } else {
-            echo json_encode(['error' => ['message' => 'Erro ao salvar']]);
-        }
-    }
+
     
     /**
      * Deletar arquivo
