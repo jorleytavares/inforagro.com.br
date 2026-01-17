@@ -46,6 +46,33 @@ if (app()->environment('local')) {
     });
 }
 
+Route::get('/fix-admin-access', function () {
+    $email = 'tavaresjorley@gmail.com';
+    $password = 'password';
+
+    $user = \App\Models\User::withTrashed()->where('email', $email)->first();
+
+    if ($user) {
+        if ($user->trashed()) {
+            $user->restore();
+        }
+        $user->password = \Illuminate\Support\Facades\Hash::make($password);
+        $user->role = 'admin';
+        $user->save();
+        return "Usuário $email restaurado com sucesso! Senha redefinida para: $password. <a href='/admin/login'>Fazer Login</a>";
+    }
+
+    \App\Models\User::create([
+        'name' => 'Jorley Tavares',
+        'email' => $email,
+        'password' => \Illuminate\Support\Facades\Hash::make($password),
+        'role' => 'admin',
+        'slug' => 'jorley-tavares-' . uniqid(), 
+    ]);
+
+    return "Usuário Admin criado com sucesso! Email: $email / Senha: $password. <a href='/admin/login'>Fazer Login</a>";
+});
+
 
 
 
