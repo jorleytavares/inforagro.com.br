@@ -22,6 +22,9 @@ class TagResource extends Resource
     protected static ?string $modelLabel = 'Tag';
     protected static ?string $pluralModelLabel = 'Tags';
     protected static ?string $navigationLabel = 'Tags';
+    protected static ?string $navigationGroup = 'Conteúdo';
+    protected static ?string $navigationIcon = 'heroicon-o-hashtag';
+    protected static ?int $navigationSort = 3;
     protected static ?string $slug = 'tags';
 
     public static function form(Form $form): Form

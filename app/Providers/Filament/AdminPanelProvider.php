@@ -29,8 +29,11 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->maxContentWidth('full') // Usa largura total da tela
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Emerald,
+                'gray' => Color::Slate,
             ])
+            ->font('Lexend')
+            ->brandName('InforAgro')
             ->favicon(asset('assets/images/favicon.ico'))
             ->renderHook(
                 'panels::head.start',

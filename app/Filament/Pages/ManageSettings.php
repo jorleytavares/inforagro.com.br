@@ -17,6 +17,8 @@ class ManageSettings extends Page
     protected static string $view = 'filament.pages.manage-settings';
 
     protected static ?string $navigationLabel = 'Configurações';
+    protected static ?string $navigationGroup = 'Sistema';
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $title = 'Configurações do Site';
     

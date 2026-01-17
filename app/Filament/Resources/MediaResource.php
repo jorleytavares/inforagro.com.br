@@ -20,6 +20,8 @@ class MediaResource extends Resource
     protected static ?string $modelLabel = 'Mídia';
     protected static ?string $pluralModelLabel = 'Biblioteca de Mídias';
     protected static ?string $navigationLabel = 'Mídia';
+    protected static ?string $navigationGroup = 'Conteúdo';
+    protected static ?int $navigationSort = 4;
     protected static ?string $slug = 'midia';
 
     public static function form(Form $form): Form
