@@ -33,8 +33,6 @@ class MediaResource extends Resource
                         Forms\Components\FileUpload::make('file_path')
                             ->label('Arquivo')
                             ->directory('media')
-                            ->openable()
-                            ->downloadable()
                             ->preserveFilenames(false)
                             ->required(),
                     ]),
