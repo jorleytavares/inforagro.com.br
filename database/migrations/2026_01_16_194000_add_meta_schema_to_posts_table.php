@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->text('meta_schema')->nullable()->after('content');
+            if (!Schema::hasColumn('posts', 'meta_schema')) {
+                $table->text('meta_schema')->nullable()->after('content');
+            }
         });
     }
 
