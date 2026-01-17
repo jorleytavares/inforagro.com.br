@@ -24,6 +24,9 @@ Este arquivo define os padrões inegociáveis para o desenvolvimento deste proje
   - Aproveitar recursos de "CSS4" (Modern CSS) como aninhamento nativo e funções de cor OKLCH/HSL quando suportado.
 - **JS**: **Alpine.js v3+** para interatividade leve. Evitar jQuery ou Vanilla JS verboso.
 - **Assets**: Sempre via **Vite** (`npm run build`).
+- **Fontes**: 
+  - **Proibido**: CDN externo (Google Fonts, Adobe Fonts).
+  - **Obrigatório**: Fontes hospedadas localmente (formato `.woff2`). Usar pacotes NPM (ex: `@fontsource/inter`) ou arquivos na pasta `resources` processados pelo Vite.
 
 ---
 *Estas regras devem ser consultadas e seguidas em toda interação de desenvolvimento.*

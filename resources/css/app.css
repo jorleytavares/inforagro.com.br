@@ -1,5 +1,17 @@
 @import 'tailwindcss';
 
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+@import '@fontsource/lexend/400.css';
+@import '@fontsource/lexend/500.css';
+@import '@fontsource/lexend/600.css';
+@import '@fontsource/lexend/700.css';
+@import '@fontsource/lexend/800.css';
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
@@ -12,7 +24,7 @@
     --color-agro-500: #5F7D4E;
     --color-agro-600: #4a633d;
     --color-agro-700: #374a2e;
-    
+
     /* Overriding/Extending Slates to match design exactly if needed, 
        though Tailwind default slates are likely identical. 
        Adding them to be safe as per the original CSS. */
@@ -32,4 +44,3 @@ body {
         radial-gradient(at 80% 0%, hsla(38, 100%, 96%, 1) 0px, transparent 55%);
     background-attachment: fixed;
 }
-
