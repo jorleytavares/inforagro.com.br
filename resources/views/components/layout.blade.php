@@ -66,16 +66,12 @@
                     <span class="logo-text">InforAgro</span>
                 </a>
                 
-                @php
-                    $globalCategories = \App\Models\Category::all(); 
-                @endphp
-                
+                <!-- PHP Logic Removed -->
                 <ul class="nav-menu" id="nav-menu" role="menubar">
-                    @foreach ($globalCategories as $cat)
+                    <!-- Static Link for Debug -->
                     <li role="none">
-                        <a href="{{ url($cat->slug) }}" class="nav-link" role="menuitem">{{ $cat->name }}</a>
+                        <a href="#" class="nav-link" role="menuitem">Categorias (Manutenção)</a>
                     </li>
-                    @endforeach
                 </ul>
                 
                 <div class="nav-actions">
@@ -146,9 +142,8 @@
                 <div class="footer-links">
                     <h3>Categorias</h3>
                     <ul>
-                        @foreach ($globalCategories as $cat)
-                        <li><a href="{{ url($cat->slug) }}">{{ $cat->name }}</a></li>
-                        @endforeach
+                    <!-- Static Link for Debug -->
+                    <li><a href="#">Categorias (Manutenção)</a></li>
                     </ul>
                 </div>
                 
