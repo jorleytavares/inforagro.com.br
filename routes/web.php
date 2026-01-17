@@ -29,14 +29,7 @@ Route::get('/run-migration', function () {
     return 'Migration run successfully';
 });
 
-Route::get('/fix-slugs', function () {
-    \App\Models\User::all()->each(function ($user) {
-        if (empty($user->slug)) {
-            $user->update(['slug' => \Illuminate\Support\Str::slug($user->name)]);
-        }
-    });
-    return 'Slugs corrigidos com sucesso! Tente acessar o admin agora.';
-});
+
 
 
 // Newsletter
