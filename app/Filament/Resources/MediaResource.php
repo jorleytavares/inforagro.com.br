@@ -33,6 +33,13 @@ class MediaResource extends Resource
                         Forms\Components\FileUpload::make('file_path')
                             ->label('Arquivo')
                             ->directory('media')
+                            ->acceptedFileTypes([
+                                'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
+                                'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                'application/zip', 'video/mp4'
+                            ])
+                            ->maxSize(25600) // 25MB
                             ->preserveFilenames(false)
                             ->required(),
                     ]),

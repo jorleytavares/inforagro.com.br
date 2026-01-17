@@ -15,6 +15,12 @@ class CreateMedia extends CreateRecord
         $disk = config('filament.default_filesystem_disk') ?? config('filesystems.default');
         $path = $data['file_path'] ?? null;
 
+        if (! $path) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'file_path' => 'O upload do arquivo falhou. Verifique se o arquivo não excede o limite do servidor.',
+            ]);
+        }
+
         if ($path) {
             $data['disk'] = $disk;
             $data['mime_type'] = Storage::disk($disk)->mimeType($path) ?: null;
