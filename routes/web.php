@@ -24,9 +24,21 @@ Route::controller(\App\Http\Controllers\PageController::class)->group(function (
 });
 
 
-Route::get('/run-migration', function () {
-    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-    return 'Migration run successfully';
+Route::get('/wipe-data', function () {
+    \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+    
+    // Lista de tabelas para limpar (EXCETO users)
+    $tables = ['post_tag', 'tags', 'posts', 'categories'];
+    
+    foreach ($tables as $table) {
+        if (\Illuminate\Support\Facades\Schema::hasTable($table)) {
+            \Illuminate\Support\Facades\DB::table($table)->truncate();
+        }
+    }
+    
+    \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
+    
+    return 'Database wiped successfully (Users preserved). <a href="/">Go Home</a>';
 });
 
 
