@@ -18,8 +18,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS (CDN for Development/Preview) -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS (CDN - Production Fallback) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <style>
+        /* Crítical CSS Fallback if JS fails */
+        img, svg, video { max-width: 100%; height: auto; display: block; }
+        .container { width: 100%; margin: 0 auto; max-width: 1280px; padding: 0 1rem; }
+        .w-6 { width: 1.5rem; } .h-6 { height: 1.5rem; }
+        .hidden { display: none; }
+        @media (min-width: 768px) { .md\:flex { display: flex; } .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    </style>
     <script>
         tailwind.config = {
             theme: {
