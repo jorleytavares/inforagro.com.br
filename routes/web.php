@@ -46,31 +46,7 @@ if (app()->environment('local')) {
     });
 }
 
-Route::get('/fix-admin-access', function () {
-    $email = 'tavaresjorley@gmail.com';
-    $password = 'password';
 
-    // Try to find existing user (standard, no soft deletes)
-    $user = \App\Models\User::where('email', $email)->first();
-
-    if ($user) {
-        $user->password = \Illuminate\Support\Facades\Hash::make($password);
-        $user->role = 'admin';
-        $user->save();
-        return "Usuário $email encontrado e atualizado! Senha redefinida para: $password. <a href='/admin/login'>Fazer Login</a>";
-    }
-
-    // Create if not exists
-    \App\Models\User::create([
-        'name' => 'Jorley Tavares',
-        'email' => $email,
-        'password' => \Illuminate\Support\Facades\Hash::make($password),
-        'role' => 'admin',
-        'slug' => 'jorley-tavares-' . uniqid(), 
-    ]);
-
-    return "Usuário Admin RECRIADO com sucesso! Email: $email / Senha: $password. <a href='/admin/login'>Fazer Login</a>";
-});
 
 
 
