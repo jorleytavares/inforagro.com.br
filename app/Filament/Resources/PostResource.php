@@ -130,19 +130,15 @@ class PostResource extends Resource
                                                 Forms\Components\TextInput::make('slug')->required(),
                                             ]),
 
-                                        Forms\Components\Select::make('tags')
+                                        Forms\Components\TagsInput::make('tags_input')
                                             ->label('Tags')
-                                            ->relationship('tags', 'name')
-                                            ->multiple()
-                                            ->searchable()
-                                            ->preload()
-
-                                            ->createOptionUsing(function (string $data) {
-                                                return \App\Models\Tag::create([
-                                                    'name' => $data,
-                                                    'slug' => \Illuminate\Support\Str::slug($data),
-                                                ])->getKey();
-                                            }),
+                                            ->placeholder('Digite a tag e pressione Enter')
+                                            ->splitKeys(['Tab', ','])
+                                            ->suggestions(
+                                                \App\Models\Tag::all()->pluck('name')->toArray()
+                                            )
+                                            ->formatStateUsing(fn ($record) => $record?->tags->pluck('name')->toArray() ?? [])
+                                            ->dehydrated(false), // Não tenta salvar na tabela 'posts' diretamente
                                     ]),
                                 
                                 // Seção de Imagem Destacada
