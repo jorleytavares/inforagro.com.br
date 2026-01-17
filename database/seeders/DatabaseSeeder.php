@@ -25,5 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
         ]);
+
+        \App\Models\Post::factory(25)->create();
     }
 }

@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Share categories with layout globally
+        \Illuminate\Support\Facades\View::composer('components.layout', function ($view) {
+            $categories = \Illuminate\Support\Facades\Schema::hasTable('categories') 
+                ? \App\Models\Category::whereNull('parent_id')->get() 
+                : collect();
+            $view->with('globalCategories', $categories);
+        });
     }
 }
