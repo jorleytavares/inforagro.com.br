@@ -21,48 +21,79 @@
     <!-- Tailwind CSS (CDN - Production Fallback) -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <style>
-        /* Crítical CSS Fallback if JS fails */
-        img, svg, video { max-width: 100%; height: auto; display: block; }
-        .container { width: 100%; margin: 0 auto; max-width: 1280px; padding: 0 1rem; }
-        .w-6 { width: 1.5rem; } .h-6 { height: 1.5rem; }
+        /* --- CRITICAL CSS RESET & FALLBACK --- */
+        :root {
+            --color-agro-500: #22c55e;
+            --color-agro-600: #16a34a; 
+            --color-agro-700: #15803d;
+            --color-slate-50: #f8fafc;
+            --color-slate-100: #f1f5f9;
+            --color-slate-200: #e2e8f0;
+            --color-slate-500: #64748b;
+            --color-slate-900: #0f172a;
+        }
+        
+        body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background-color: var(--color-slate-50); color: var(--color-slate-900); line-height: 1.5; }
+        
+        /* Layout & Grid */
+        .container { width: 100%; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; max-width: 1280px; }
+        .grid { display: grid; gap: 1rem; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; } .gap-3 { gap: 0.75rem; } .gap-4 { gap: 1rem; } .gap-8 { gap: 2rem; } .gap-12 { gap: 3rem; }
         .hidden { display: none; }
-        @media (min-width: 768px) { .md\:flex { display: flex; } .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Lexend', 'sans-serif'],
-                    },
-                    colors: {
-                        agro: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a', // Primary Green
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
-                        },
-                        earth: {
-                            500: '#f97316',
-                            600: '#ea580c', // Secondary Orange
-                        }
-                    }
-                }
-            }
+        
+        /* Sizing - CRITICAL FOR ICONS */
+        .w-full { width: 100%; } .h-full { height: 100%; }
+        .w-6 { width: 1.5rem; height: 1.5rem; } .h-6 { height: 1.5rem; width: 1.5rem; } /* Fix SVG icons */
+        .w-10 { width: 2.5rem; height: 2.5rem; } .h-10 { height: 2.5rem; width: 2.5rem; }
+        .w-16 { width: 4rem; height: 4rem; } .h-16 { height: 4rem; width: 4rem; }
+        
+        /* Typography */
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        
+        /* Colors */
+        .text-white { color: white; }
+        .text-slate-500 { color: var(--color-slate-500); }
+        .text-slate-900 { color: var(--color-slate-900); }
+        .text-agro-600 { color: var(--color-agro-600); }
+        .bg-white { background-color: white; }
+        .bg-slate-50 { background-color: var(--color-slate-50); }
+        .bg-slate-100 { background-color: var(--color-slate-100); }
+        .bg-agro-600 { background-color: var(--color-agro-600); }
+        
+        /* Components */
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-full { border-radius: 9999px; }
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .glass-nav { background: rgba(255, 255, 255, 0.95); border-bottom: 1px solid #e2e8f0; position: fixed; width: 100%; top: 0; z-index: 50; }
+        .pt-20 { padding-top: 5rem; } /* Offset for fixed header */
+        
+        /* Media Queries */
+        @media (min-width: 768px) {
+            .md\:flex { display: flex; }
+            .hidden.md\:flex { display: flex !important; } /* Force show */
+            .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .md\:col-span-1 { grid-column: span 1 / span 1; }
         }
-    </script>
-    <style>
-        /* Custom Utilities */
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+        
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+            .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
         }
-        .text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+
+        svg { display: block; vertical-align: middle; }
     </style>
 
     @stack('head-scripts')
