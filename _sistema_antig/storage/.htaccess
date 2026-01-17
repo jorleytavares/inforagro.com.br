@@ -1,3 +1,0 @@
-# Bloquear acesso ao diretório storage
-Order deny,allow
-Deny from all

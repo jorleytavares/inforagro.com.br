@@ -6,6 +6,30 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Lexend', sans-serif;
+
+    --color-agro-500: #5F7D4E;
+    --color-agro-600: #4a633d;
+    --color-agro-700: #374a2e;
+    
+    /* Overriding/Extending Slates to match design exactly if needed, 
+       though Tailwind default slates are likely identical. 
+       Adding them to be safe as per the original CSS. */
+    --color-slate-50: #f0f2f5;
+    --color-slate-100: #f1f5f9;
+    --color-slate-200: #e2e8f0;
+    --color-slate-500: #64748b;
+    --color-slate-900: #0f172a;
 }
+
+/* Custom Utilities or Global Styles */
+body {
+    background-color: var(--color-slate-50);
+    background-image:
+        radial-gradient(at 0% 0%, hsla(108, 47%, 95%, 1) 0px, transparent 55%),
+        radial-gradient(at 50% 100%, hsla(192, 63%, 94%, 1) 0px, transparent 55%),
+        radial-gradient(at 80% 0%, hsla(38, 100%, 96%, 1) 0px, transparent 55%);
+    background-attachment: fixed;
+}
+
