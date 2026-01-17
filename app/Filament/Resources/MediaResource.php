@@ -31,8 +31,6 @@ class MediaResource extends Resource
                         Forms\Components\FileUpload::make('file_path')
                             ->label('Arquivo')
                             ->directory('media')
-                            ->image()
-                            ->imageEditor()
                             ->openable()
                             ->downloadable()
                             ->preserveFilenames(false)
@@ -125,4 +123,3 @@ class MediaResource extends Resource
         ];
     }
 }
-
