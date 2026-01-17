@@ -17,9 +17,12 @@ Este arquivo define os padrões inegociáveis para o desenvolvimento deste proje
 - **Layouts**: Headers, Footers e Sidebars devem ser componentes isolados.
 - **Manutenção**: Se um bloco de código aparece mais de uma vez ou tem lógica própria complexa, ele merece ser extraído para `resources/views/components`.
 
-## 3. Stack Limpa
-- **CSS**: Apenas **TailwindCSS** via classes utilitárias ou `@theme`. Nada de CSS puro solto sem necessidade.
-- **JS**: **Alpine.js** para interatividade leve. Evitar jQuery ou Vanilla JS verboso.
+## 3. Stack Limpa & Moderna
+- **CSS**: Obrigatório uso de **Tailwind CSS v4** com arquitetura modernizada:
+  - Usar `@theme` dentro do CSS em vez de `tailwind.config.js`.
+  - Usar variáveis CSS nativas (`--color-name`) para tokens de design.
+  - Aproveitar recursos de "CSS4" (Modern CSS) como aninhamento nativo e funções de cor OKLCH/HSL quando suportado.
+- **JS**: **Alpine.js v3+** para interatividade leve. Evitar jQuery ou Vanilla JS verboso.
 - **Assets**: Sempre via **Vite** (`npm run build`).
 
 ---
