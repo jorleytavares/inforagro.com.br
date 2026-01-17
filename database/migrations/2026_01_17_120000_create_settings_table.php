@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('settings'); // Ensure clean slate if table exists from failed migration
         Schema::create('settings', function (Blueprint $table) {
             $table->string('option')->primary();
             $table->json('payload')->nullable(); 
