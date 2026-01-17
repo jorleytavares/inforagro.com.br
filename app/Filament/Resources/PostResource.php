@@ -224,6 +224,24 @@ class PostResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('changeStatus')
+                        ->label('Alterar Status')
+                        ->icon('heroicon-o-pencil-square')
+                        ->form([
+                            Forms\Components\Select::make('status')
+                                ->label('Novo Status')
+                                ->options([
+                                    'draft' => 'Rascunho',
+                                    'published' => 'Publicado',
+                                ])
+                                ->required(),
+                        ])
+                        ->action(function (\Illuminate\Database\Eloquent\Collection $records, array $data) {
+                            $records->each(function ($record) use ($data) {
+                                $record->update(['status' => $data['status']]);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
