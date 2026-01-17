@@ -15,7 +15,7 @@ class Tag extends Model
         'slug',
     ];
 
-    public $timestamps = false; // Disable timestamps if column missing
+    // public $timestamps = false; // Enabled by default as migration has timestamps
 
     public function posts(): BelongsToMany
     {
