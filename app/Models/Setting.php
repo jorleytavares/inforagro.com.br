@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    // The primary key is a string 'key'
-    protected $primaryKey = 'key';
+    // The primary key is a string 'option'
+    protected $primaryKey = 'option';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'key',
+        'option',
         'payload',
     ];
 
@@ -29,7 +29,6 @@ class Setting extends Model
      */
     public static function get(string $key, mixed $default = null): mixed
     {
-        // Simple caching strategy could be added here later (e.g. Cache::rememberForever)
         $setting = static::find($key);
         return $setting ? $setting->payload : $default;
     }
@@ -44,7 +43,7 @@ class Setting extends Model
     public static function set(string $key, mixed $value): void
     {
         static::updateOrCreate(
-            ['key' => $key],
+            ['option' => $key],
             ['payload' => $value]
         );
     }

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('settings', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->json('payload')->nullable(); // Can store any serializable data
+            $table->string('option')->primary();
+            $table->json('payload')->nullable(); 
             $table->timestamps();
         });
     }
