@@ -111,24 +111,7 @@
         </div>
     </div>
     
-    <!-- Breadcrumb -->
-                @if(isset($breadcrumbs))
-                <nav class="breadcrumb-nav">
-                    <div class="container">
-                        <ol class="breadcrumb">
-                            @foreach ($breadcrumbs as $crumb)
-                            <li>
-                                @if(!$loop->last)
-                                <a href="{{ $crumb['url'] }}">{{ $crumb['name'] }}</a>
-                                @else
-                                <span>{{ $crumb['name'] }}</span>
-                                @endif
-                            </li>
-                            @endforeach
-                        </ol>
-                    </div>
-                </nav>
-                @endif
+
     
     <!-- Main Content -->
     <main id="main-content">
