@@ -212,7 +212,7 @@ class PostResource extends Resource
                 Tables\Actions\Action::make('view')
                     ->label('Ver no Site')
                     ->icon('heroicon-m-eye')
-                    ->url(fn (Post $record): string => route('posts.show', $record->slug))
+                    ->url(fn (Post $record): string => route('post.show', ['category' => $record->category->slug, 'post' => $record->slug]))
                     ->openUrlInNewTab()
                     ->visible(fn (Post $record): bool => $record->status === 'published'),
                 Tables\Actions\EditAction::make(),
