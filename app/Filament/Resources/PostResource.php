@@ -150,7 +150,7 @@ class PostResource extends Resource
                                         Forms\Components\FileUpload::make('featured_image')
                                             ->label('Imagem Destacada')
                                             ->directory('uploads')
-                                            ->acceptedFileTypes(['image/*'])
+                                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                                             ->preserveFilenames(false)
                                             ->imageEditor(), // Adiciona editor de imagem simples
 
