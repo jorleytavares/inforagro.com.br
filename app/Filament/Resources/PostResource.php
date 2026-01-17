@@ -176,6 +176,10 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Categoria')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('author.name')
+                    ->label('Autor')
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -195,9 +199,22 @@ class PostResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
-                    ->relationship('category', 'name'),
+                    ->relationship('category', 'name')
+                    ->label('Categoria'),
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'draft' => 'Rascunho',
+                        'published' => 'Publicado',
+                    ])
+                    ->label('Status'),
             ])
             ->actions([
+                Tables\Actions\Action::make('view')
+                    ->label('Ver no Site')
+                    ->icon('heroicon-m-eye')
+                    ->url(fn (Post $record): string => route('posts.show', $record->slug))
+                    ->openUrlInNewTab()
+                    ->visible(fn (Post $record): bool => $record->status === 'published'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

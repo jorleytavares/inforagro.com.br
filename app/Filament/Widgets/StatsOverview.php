@@ -16,19 +16,26 @@ class StatsOverview extends BaseWidget
     {
         return [
             Stat::make('Total de Posts', Post::count())
-                ->description('Artigos publicados no blog')
+                ->description('Artigos publicados')
                 ->descriptionIcon('heroicon-m-document-text')
                 ->color('primary')
-                ->chart([7, 2, 10, 3, 15, 4, 17]),
+                ->chart(
+                    Post::selectRaw('DATE(created_at) as date, count(*) as count')
+                        ->groupBy('date')
+                        ->orderBy('date', 'desc')
+                        ->limit(7)
+                        ->pluck('count')
+                        ->toArray()
+                ),
 
-            Stat::make('Total de Usuários', User::count())
-                ->description('Membros cadastrados')
-                ->descriptionIcon('heroicon-m-users')
+            Stat::make('Posts Publicados', Post::where('status', 'published')->count())
+                ->description('Visíveis no site')
+                ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
 
-            Stat::make('Categorias', Category::count())
-                ->description('Tópicos ativos')
-                ->descriptionIcon('heroicon-m-tag')
+            Stat::make('Rascunhos', Post::where('status', 'draft')->count())
+                ->description('Em edição')
+                ->descriptionIcon('heroicon-m-pencil-square')
                 ->color('warning'),
         ];
     }
