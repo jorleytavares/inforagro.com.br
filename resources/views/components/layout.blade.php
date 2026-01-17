@@ -74,11 +74,10 @@
                 @endphp
                 
                 <ul class="nav-menu" id="nav-menu" role="menubar">
-                    @foreach ($globalCategories as $cat)
+                    <!-- Header Links Removed for Debug -->
                     <li role="none">
-                        <a href="{{ url($cat->slug) }}" class="nav-link" role="menuitem">{{ $cat->name }}</a>
+                        <a href="#" class="nav-link" role="menuitem">Categoria Teste</a>
                     </li>
-                    @endforeach
                 </ul>
                 
                 <div class="nav-actions">
@@ -132,10 +131,9 @@
                 
                 <div class="footer-links">
                     <h3>Categorias</h3>
+                    <!-- Footer Links Removed for Debug -->
                     <ul>
-                        @foreach ($globalCategories as $cat)
-                        <li><a href="{{ url($cat->slug) }}">{{ $cat->name }}</a></li>
-                        @endforeach
+                        <li><a href="#">Categoria Teste</a></li>
                     </ul>
                 </div>
                 
