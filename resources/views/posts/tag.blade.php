@@ -1,15 +1,21 @@
 <x-layout>
     <x-slot:title>{{ $pageTitle }}</x-slot>
 
-    <div class="category-header bg-gray-50 py-12 mb-8">
+    <div class="bg-white border-b border-slate-200 py-10">
         <div class="container mx-auto px-4">
-            <span class="text-sm uppercase tracking-wide text-gray-500 font-semibold">Tópico</span>
-            <h1 class="text-4xl font-bold text-gray-900 mt-2">#{{ $tag->name }}</h1>
-            <p class="text-xl text-gray-600 mt-2">Explorando todas as publicações sobre este tema.</p>
+            <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Tópico
+            </span>
+            <h1 class="mt-2 text-3xl md:text-4xl font-bold text-slate-900">
+                #{{ $tag->name }}
+            </h1>
+            <p class="mt-3 text-lg text-slate-600">
+                Explorando todas as publicações sobre este tema.
+            </p>
         </div>
     </div>
 
-    <section class="section py-8">
+    <section class="py-10">
         <div class="container mx-auto px-4">
             @if($posts->isNotEmpty())
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -18,13 +24,20 @@
                     @endforeach
                 </div>
 
-                <div class="mt-8">
+                <div class="mt-10">
                     {{ $posts->links() }}
                 </div>
             @else
-                <div class="text-center py-12">
-                    <p class="text-xl text-gray-600 mb-6">Nenhuma publicação encontrada para esta tag.</p>
-                    <a href="/" class="inline-block bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition duration-150">Voltar para Home</a>
+                <div class="text-center py-16">
+                    <p class="text-xl text-slate-600 mb-6">
+                        Nenhuma publicação encontrada para esta tag.
+                    </p>
+                    <a
+                        href="/"
+                        class="inline-flex items-center px-6 py-3 rounded-lg bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700 transition-colors"
+                    >
+                        Voltar para Home
+                    </a>
                 </div>
             @endif
         </div>

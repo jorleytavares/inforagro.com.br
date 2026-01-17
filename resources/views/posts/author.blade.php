@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>{{ $pageTitle }}</x-slot>
 
-    <div class="category-header bg-gray-50 py-12 mb-8">
+    <div class="bg-white border-b border-slate-200 py-12 mb-8">
         <div class="container mx-auto px-4 text-center">
             @if($author->avatar)
                 <img src="{{ asset('storage/' . $author->avatar) }}" alt="{{ $author->name }}" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-white shadow">
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <section class="section py-8">
+    <section class="py-8">
         <div class="container mx-auto px-4">
             <h2 class="text-2xl font-bold mb-6 border-b pb-2">Artigos publicados</h2>
             
