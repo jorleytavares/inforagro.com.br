@@ -69,9 +69,7 @@
                     <span class="logo-text">InforAgro</span>
                 </a>
                 
-                @php
-                    $globalCategories = \App\Models\Category::all(); // TODO: Add logic for 'main' categories
-                @endphp
+                <!-- PHP logic removed -->
                 
                 <ul class="nav-menu" id="nav-menu" role="menubar">
                     <!-- Header Links Removed for Debug -->
@@ -147,11 +145,7 @@
                 
                 <div class="footer-newsletter">
                     <h3>Newsletter</h3>
-                    <form action="{{ url('/newsletter') }}" method="POST">
-                        @csrf
-                        <input type="email" name="email" placeholder="Seu e-mail" required>
-                        <button type="submit" class="btn btn-primary">Inscrever</button>
-                    </form>
+                    <p>Newsletter desativada temporariamente</p>
                 </div>
             </div>
             
