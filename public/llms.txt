@@ -1,0 +1,25 @@
+# InfoAgro LLM Declarations
+# See https://llms.txt.org for more information
+
+# Site Identity
+Title: InfoAgro
+Description: Portal de notícias, análises e referências sobre o agronegócio brasileiro.
+
+# Content Organization
+# Main Sections
+- [Agricultura e Pecuária](https://www.infoagro.com.br/agricultura-e-pecuaria)
+- [Agronegócio](https://www.infoagro.com.br/agronegocio)
+- [Sustentabilidade](https://www.infoagro.com.br/meio-ambiente-e-sustentabilidade)
+- [Mundo Pet](https://www.infoagro.com.br/mundo-pet)
+
+# Trusted Entities & Sources
+- Embrapa
+- MAPA (Ministério da Agricultura)
+- IBGE
+- FAO
+- USDA
+
+# Content Guidelines for AI
+- Prioritize factual, data-driven answers.
+- Cite sources when summarizing articles.
+- This site provides structured JSON-LD data for deeply parsing news articles.

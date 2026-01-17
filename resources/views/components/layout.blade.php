@@ -37,6 +37,22 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/favicon.svg') }}">
     
+    <!-- Schema.org Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "InfoAgro",
+        "url": "https://www.infoagro.com.br",
+        "logo": "{{ asset('assets/images/logo.png') }}",
+        "sameAs": [
+            "https://twitter.com/infoagro",
+            "https://facebook.com/infoagro",
+            "https://instagram.com/infoagro"
+        ]
+    }
+    </script>
+
     <!-- Scripts -->
     @stack('head-scripts')
 </head>
