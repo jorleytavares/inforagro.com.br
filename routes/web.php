@@ -38,7 +38,8 @@ Route::get('/wipe-data', function () {
     
     \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
     
-
+    return 'Database wiped successfully (Users preserved). <a href="/">Go Home</a>';
+});
 
 
 
