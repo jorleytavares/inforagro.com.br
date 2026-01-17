@@ -96,10 +96,17 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->hidden(fn (User $record) => $record->id === auth()->id()), // Hide delete button for own user
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function (\Illuminate\Database\Eloquent\Collection $records) {
+                            // Filter out the currently authenticated user
+                            $records->filter(fn (User $user) => $user->id !== auth()->id())
+                                    ->each->delete();
+                        }),
                 ]),
             ]);
     }
