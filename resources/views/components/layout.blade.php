@@ -81,7 +81,7 @@
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-1">
-                    @if(isset($globalCategories))
+                    @if(isset($globalCategories) && $globalCategories->count() > 0)
                         @foreach($globalCategories as $cat)
                         <a href="{{ url($cat->slug) }}" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-agro-700 hover:bg-agro-50 transition-colors">
                             {{ $cat->name }}
@@ -135,10 +135,12 @@
                 <div>
                     <h3 class="font-bold text-slate-900 mb-4">Editorias</h3>
                     <ul class="space-y-3 text-sm text-slate-600 w-full">
-                        @if(isset($globalCategories))
+                        @if(isset($globalCategories) && $globalCategories->count() > 0)
                             @foreach($globalCategories as $cat)
                             <li><a href="{{ url($cat->slug) }}" class="hover:text-agro-600 transition-colors">{{ $cat->name }}</a></li>
                             @endforeach
+                        @else
+                            <li><span class="text-slate-400">Sem categorias</span></li>
                         @endif
                     </ul>
                 </div>
