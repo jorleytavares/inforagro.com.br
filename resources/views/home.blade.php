@@ -118,7 +118,9 @@
                 @if(isset($categories))
                     @foreach($categories as $cat)
                     <a href="{{ url($cat->slug) }}" class="flex flex-col items-center justify-center p-6 bg-slate-50 rounded-xl hover:bg-agro-50 hover:scale-105 transition-all group border border-slate-100">
-                        <span class="text-3xl mb-3 group-hover:scale-110 transition-transform block">{{ $category->icon ?? '🌱' }}</span>
+                        @if($cat->icon)
+                        <span class="text-3xl mb-3 group-hover:scale-110 transition-transform block">{{ $cat->icon }}</span>
+                        @endif
                         <span class="text-sm font-medium text-slate-700 group-hover:text-agro-700 text-center">{{ $cat->name }}</span>
                     </a>
                     @endforeach
