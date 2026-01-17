@@ -7,7 +7,7 @@
 
     <!-- SEO & Meta -->
     <meta name="description" content="{{ $description ?? 'Notícias, cotações e tecnologia para o agronegócio brasileiro.' }}">
-    <meta name="theme-color" content="#166534">
+    <meta name="theme-color" content="#5F7D4E">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/images/favicon-96x96.png') }}">
@@ -32,17 +32,28 @@
     <style>
         /* --- CRITICAL CSS RESET & FALLBACK --- */
         :root {
-            --color-agro-500: #22c55e;
-            --color-agro-600: #16a34a; 
-            --color-agro-700: #15803d;
-            --color-slate-50: #f8fafc;
+            --color-agro-500: #5F7D4E;
+            --color-agro-600: #4a633d; 
+            --color-agro-700: #374a2e;
+            --color-slate-50: #f0f2f5;
             --color-slate-100: #f1f5f9;
             --color-slate-200: #e2e8f0;
             --color-slate-500: #64748b;
             --color-slate-900: #0f172a;
         }
         
-        body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background-color: var(--color-slate-50); color: var(--color-slate-900); line-height: 1.5; }
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f0f2f5;
+            background-image:
+                radial-gradient(at 0% 0%, hsla(108, 47%, 95%, 1) 0px, transparent 55%),
+                radial-gradient(at 50% 100%, hsla(192, 63%, 94%, 1) 0px, transparent 55%),
+                radial-gradient(at 80% 0%, hsla(38, 100%, 96%, 1) 0px, transparent 55%);
+            background-attachment: fixed;
+            color: var(--color-slate-900);
+            line-height: 1.5;
+        }
         
         /* Layout & Grid */
         .container { width: 100%; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; max-width: 1280px; }
@@ -85,7 +96,17 @@
         .rounded-xl { border-radius: 0.75rem; }
         .rounded-full { border-radius: 9999px; }
         .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-        .glass-nav { background: rgba(255, 255, 255, 0.95); border-bottom: 1px solid #e2e8f0; position: fixed; width: 100%; top: 0; z-index: 50; }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 50;
+        }
         .pt-20 { padding-top: 5rem; } /* Offset for fixed header */
         
         /* Media Queries */
@@ -140,14 +161,18 @@
 
                 <!-- Actions -->
                 <div class="flex items-center gap-3">
-                    <button class="p-2 text-slate-500 hover:text-agro-600 hover:bg-agro-50 rounded-full transition-colors" aria-label="Buscar">
+                    <button class="p-2 text-slate-500 hover:text-agro-600 hover:bg-slate-100 rounded-full transition-colors" aria-label="Buscar">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </button>
                     <!-- Newsletter Button (Desktop) -->
-                    <a href="#newsletter" class="hidden sm:inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition-all hover:shadow-md">
-                        Inscrever-se
+                    <a href="#newsletter" class="hidden sm:inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-agro-600 hover:bg-agro-700 shadow-sm transition-all hover:shadow-md gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2.94 6.34A2 2 0 0 1 4.6 5h10.8a2 2 0 0 1 1.66.94l-7.06 4.12a1 1 0 0 1-1 0L2.94 6.34Z" />
+                            <path d="M2 8.25v5.5A2.25 2.25 0 0 0 4.25 16h11.5A2.25 2.25 0 0 0 18 13.75v-5.5l-6.47 3.78a3 3 0 0 1-3.06 0L2 8.25Z" />
+                        </svg>
+                        <span>Inscrever-se</span>
                     </a>
                 </div>
             </div>
@@ -172,10 +197,29 @@
                         O portal de referência para o produtor rural moderno. Informação, tecnologia e mercado na palma da sua mão.
                     </p>
                     <div class="flex gap-4 mt-6">
-                        <!-- Social Icons Placeholders -->
-                        <a href="#" class="text-slate-400 hover:text-agro-600 transition-colors"><span class="sr-only">Instagram</span>📷</a>
-                        <a href="#" class="text-slate-400 hover:text-agro-600 transition-colors"><span class="sr-only">Twitter</span>🐦</a>
-                        <a href="#" class="text-slate-400 hover:text-agro-600 transition-colors"><span class="sr-only">LinkedIn</span>💼</a>
+                        <a href="#" class="text-slate-400 hover:text-agro-600 transition-colors">
+                            <span class="sr-only">Instagram</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="18" height="18" rx="5" ry="5" stroke="currentColor" stroke-width="1.6" />
+                                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6" />
+                                <circle cx="17" cy="7" r="1.2" fill="currentColor" />
+                            </svg>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-agro-600 transition-colors">
+                            <span class="sr-only">X</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 5l5.2 6.4L6 19h2.2L12 13.7 15.8 19H18l-5.2-7.6L18 5h-2.2L12 10.3 8.2 5H6z" fill="currentColor" />
+                            </svg>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-agro-600 transition-colors">
+                            <span class="sr-only">LinkedIn</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="1.6" />
+                                <rect x="7" y="10" width="2" height="7" fill="currentColor" />
+                                <rect x="7" y="7" width="2" height="2" fill="currentColor" />
+                                <path d="M13 10h1.6A2.4 2.4 0 0 1 17 12.4V17h-2v-4c0-.6-.4-1-1-1h-1v5h-2v-7h2z" fill="currentColor" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
