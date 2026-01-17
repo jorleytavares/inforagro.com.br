@@ -15,7 +15,7 @@ class MediaResource extends Resource
 {
     protected static ?string $model = Media::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-photo';
+
 
     protected static ?string $modelLabel = 'Mídia';
     protected static ?string $pluralModelLabel = 'Biblioteca de Mídias';
