@@ -22,25 +22,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->role === 'admin' || $this->email === 'tavaresjorley@gmail.com';
-    }
-
-    /**
-     * Disable Remember Token (Legacy DB compatibility)
-     */
-    public function getRememberToken()
-    {
-        return null;
-    }
-
-    public function setRememberToken($value)
-    {
-        // Do nothing
-    }
-
-    public function getRememberTokenName()
-    {
-        return ''; // Return empty to prevent usage
+        return $this->role === 'admin';
     }
 
     /**

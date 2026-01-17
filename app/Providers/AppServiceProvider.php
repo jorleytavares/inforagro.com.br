@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Illuminate\Database\Eloquent\Model::shouldBeStrict(!app()->isProduction());
+
         // Share categories with layout globally
         \Illuminate\Support\Facades\View::composer('components.layout', function ($view) {
             $categories = \Illuminate\Support\Facades\Schema::hasTable('categories') 
