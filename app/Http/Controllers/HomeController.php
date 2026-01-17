@@ -14,20 +14,11 @@ class HomeController extends Controller
 
         $featuredPosts = Post::with(['category', 'author'])
             ->where('status', 'published')
-            ->where('is_featured', true)
             ->latest('published_at')
             ->take(3)
             ->get();
             
-        // Se não tiver destaques suficientes, completa com os últimos
-        if ($featuredPosts->count() < 1) {
-             $featuredPosts = Post::with(['category', 'author'])
-                ->where('status', 'published')
-                ->latest('published_at')
-                ->take(3)
-                ->get();
-        }
-
+        // Latest posts (skip the featured ones)
         $latestPosts = Post::with(['category', 'author'])
             ->where('status', 'published')
             ->whereNotIn('id', $featuredPosts->pluck('id'))
