@@ -148,6 +148,7 @@ class PostResource extends Resource
                                             ->label('Imagem Destacada')
                                             ->image()
                                             ->directory('uploads')
+                                            ->preserveFilenames(false)
                                             ->imageEditor(), // Adiciona editor de imagem simples
 
                                         Forms\Components\TextInput::make('featured_image_caption')
