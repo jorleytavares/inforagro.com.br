@@ -38,10 +38,7 @@ Route::get('/wipe-data', function () {
     
     \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
     
-Route::get('/run-seed', function () {
-    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-    return 'Database seeded successfully. <a href="/">Go Home</a>';
-});
+
 
 
 

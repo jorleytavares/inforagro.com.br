@@ -37,8 +37,9 @@
                                     </div>
                                 </div>
                              @else
-                                <div class="bg-slate-200 h-96 w-full flex items-center justify-center text-slate-400">
-                                    <span>Sem destaques no momento</span>
+                                <div class="bg-gradient-to-br from-slate-100 to-slate-200 h-96 w-full flex flex-col items-center justify-center text-slate-400 p-8 text-center border-2 border-dashed border-slate-300 rounded-2xl">
+                                    <svg class="w-16 h-16 mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                    <span class="font-medium text-slate-500">Destaques em breve</span>
                                 </div>
                              @endif
                         </div>
@@ -109,8 +110,11 @@
                     @endforeach
                 @else
                     <div class="col-span-3 text-center py-10">
-                        <p class="text-slate-500">Nenhum post encontrado. Execute o Seed para popular o site.</p>
-                        <a href="/run-seed" class="text-agro-600 font-bold hover:underline mt-2 inline-block">Executar Seed Agora</a>
+                        <div class="inline-block p-4 rounded-full bg-slate-100 mb-4">
+                            <span class="text-4xl">📝</span>
+                        </div>
+                        <h3 class="text-lg font-medium text-slate-900">Nenhum conteúdo publicado</h3>
+                        <p class="mt-2 text-slate-500 max-w-sm mx-auto">Nosso time editorial está preparando as melhores notícias do agronegócio para você. Volte em breve!</p>
                     </div>
                 @endif
             </div>
