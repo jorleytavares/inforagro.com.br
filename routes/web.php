@@ -29,6 +29,12 @@ Route::get('/run-migration', function () {
     return 'Migration run successfully';
 });
 
+Route::get('/clear-cache', function () {
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    return 'Cache de views limpo!';
+});
+
 
 
 
