@@ -31,7 +31,14 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Nome')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Forms\Set $set, $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+
+                Forms\Components\TextInput::make('slug')
+                    ->required()
+                    ->maxLength(255)
+                    ->unique(ignoreRecord: true),
                 
                 Forms\Components\TextInput::make('email')
                     ->email()
