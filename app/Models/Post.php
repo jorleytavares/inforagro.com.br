@@ -30,6 +30,7 @@ class Post extends Model
         'content_type',
         'published_at',
         'views',
+        'meta_schema',
     ];
 
     protected $casts = [

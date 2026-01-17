@@ -24,7 +24,10 @@ Route::controller(\App\Http\Controllers\PageController::class)->group(function (
 });
 
 
-
+Route::get('/run-migration', function () {
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    return 'Migration run successfully';
+});
 
 
 // Newsletter

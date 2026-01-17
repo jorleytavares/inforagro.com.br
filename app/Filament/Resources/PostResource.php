@@ -58,7 +58,31 @@ class PostResource extends Resource
                                             ->required()
                                             ->columnSpanFull(),
                                     ]),
-                            ])
+
+                                    
+                        Forms\Components\Section::make('SEO & Metadados')
+                            ->collapsed()
+                            ->schema([
+                                Forms\Components\TextInput::make('meta_title')
+                                    ->label('Meta Título')
+                                    ->maxLength(60)
+                                    ->helperText('Título que aparecerá nos resultados de busca (máx 60 caracteres)'),
+                                
+                                Forms\Components\Textarea::make('meta_description')
+                                    ->label('Meta Descrição')
+                                    ->maxLength(160)
+                                    ->helperText('Resumo para motores de busca (máx 160 caracteres)'),
+
+                                Forms\Components\TextInput::make('focus_keyword')
+                                    ->label('Palavra-chave Foco')
+                                    ->maxLength(255),
+
+                                Forms\Components\Textarea::make('meta_schema')
+                                    ->label('Schema (JSON-LD)')
+                                    ->rows(5)
+                                    ->helperText('Insira o JSON-LD customizado aqui, se necessário'),
+                            ]),
+                    ])
                             ->columnSpan(2), // Ocupa 2 colunas
 
                         // COLUNA LATERAL (Direita vai ocupar 1/3)
